@@ -2,17 +2,27 @@ package br.com.fausto.mypeople.ui.viewmodel
 
 import androidx.databinding.Bindable
 import androidx.databinding.Observable
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.fausto.mypeople.database.subscriber.Subscriber
 import br.com.fausto.mypeople.repository.subscriber.RSubscriber
+import br.com.fausto.mypeople.ui.utils.Event
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 class SubscriberVM(private val repository: RSubscriber) : ViewModel(), Observable {
 
     val subscribers = repository.subscribers
+    private var isUpdateOrDelete = false
+    private lateinit var subscriberToUpdateOrDelete: Subscriber
+
+    private val statusMessage = MutableLiveData<Event<String>>()
+
+    val message: LiveData<Event<String>>
+        get() = statusMessage
+
 
     @Bindable
     val inputName = MutableLiveData<String>()
@@ -32,34 +42,69 @@ class SubscriberVM(private val repository: RSubscriber) : ViewModel(), Observabl
     }
 
     fun saveOrUpdate() {
-        val name = inputName.value!!
-        val email = inputEmail.value!!
-        insert(Subscriber(0, name, email))
-        inputName.value = null
-        inputEmail.value = null
+        if (isUpdateOrDelete) {
+            subscriberToUpdateOrDelete.name = inputName.value!!
+            subscriberToUpdateOrDelete.email = inputEmail.value!!
+            update(subscriberToUpdateOrDelete)
+        } else {
+            val name = inputName.value!!
+            val email = inputEmail.value!!
+            insert(Subscriber(0, name, email))
+            inputName.value = null
+            inputEmail.value = null
+        }
     }
 
     fun clearAllOrDelete() {
-        clearAll()
+        if (isUpdateOrDelete) {
+            delete(subscriberToUpdateOrDelete)
+        } else {
+            clearAll()
+        }
     }
 
     fun insert(subscriber: Subscriber): Job =
-        viewModelScope.launch { repository.insert(subscriber) }
+        viewModelScope.launch {
+            repository.insert(subscriber)
+            statusMessage.value = Event("Successfully registered")
+        }
 
     fun update(subscriber: Subscriber): Job =
         viewModelScope.launch {
             repository.update(subscriber)
+            inputName.value = null
+            inputEmail.value = null
+            isUpdateOrDelete = false
+            saveOrUpdateButtonText.value = "Save"
+            clearOrDeleteButtonText.value = "Clear All"
+            statusMessage.value = Event("Successfully updated")
         }
 
     fun delete(subscriber: Subscriber): Job =
         viewModelScope.launch {
             repository.delete(subscriber)
+            inputName.value = null
+            inputEmail.value = null
+            isUpdateOrDelete = false
+            saveOrUpdateButtonText.value = "Save"
+            clearOrDeleteButtonText.value = "Clear All"
+            statusMessage.value = Event("Successfully deleted")
         }
 
     fun clearAll(): Job =
         viewModelScope.launch {
             repository.deleteAll()
+            statusMessage.value = Event("deleted everything")
         }
+
+    fun initUpdateAndDelete(subscriber: Subscriber) {
+        inputName.value = subscriber.name
+        inputEmail.value = subscriber.email
+        isUpdateOrDelete = true
+        subscriberToUpdateOrDelete = subscriber
+        saveOrUpdateButtonText.value = "Update"
+        clearOrDeleteButtonText.value = "Delete"
+    }
 
     override fun addOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {
 
