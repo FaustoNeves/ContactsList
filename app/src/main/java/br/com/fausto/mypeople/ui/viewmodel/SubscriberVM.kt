@@ -36,7 +36,7 @@ class SubscriberVM(private val repository: RSubscriber) : ViewModel(), Observabl
         val email = inputEmail.value!!
         insert(Subscriber(0, name, email))
         inputName.value = null
-        inputEmail.value
+        inputEmail.value = null
     }
 
     fun clearAllOrDelete() {
