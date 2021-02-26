@@ -9,10 +9,12 @@ import br.com.fausto.mypeople.database.subscriber.Subscriber
 import br.com.fausto.mypeople.databinding.SubscriberListItemBinding
 
 class SubscriberAdapter(
-    private val subscribersList: List<Subscriber>,
     private val clickListener: (Subscriber) -> Unit
 ) :
     RecyclerView.Adapter<MyViewHolder>() {
+
+    private val subscribersList = ArrayList<Subscriber>()
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding: SubscriberListItemBinding =
@@ -23,6 +25,11 @@ class SubscriberAdapter(
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.bind(subscribersList[position], clickListener)
+    }
+
+    fun setList(subscribers: List<Subscriber>) {
+        subscribersList.clear()
+        subscribersList.addAll(subscribers)
     }
 
     override fun getItemCount(): Int {

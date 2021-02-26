@@ -7,7 +7,7 @@ import androidx.room.*
 interface SubscriberDAO {
 
     @Insert
-    suspend fun insertSubscriber(subscriber: Subscriber): Long
+    suspend fun insertSubscriber(subscriber: Subscriber)
 
     @Update
     suspend fun updateSubscriber(subscriber: Subscriber)

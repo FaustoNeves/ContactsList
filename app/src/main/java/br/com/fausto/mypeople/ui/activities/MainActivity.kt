@@ -22,6 +22,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var subscriberViewModel: SubscriberVM
+    private lateinit var subscriperAdapter: SubscriberAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +45,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun initRecyclerView() {
         binding.subscriberRecyclerView.layoutManager = LinearLayoutManager(this)
+        subscriperAdapter =
+            SubscriberAdapter { selectedItem: Subscriber -> listItemClicked(selectedItem) }
+        binding.subscriberRecyclerView.adapter = subscriperAdapter
         displaySubscribersList()
     }
 
@@ -51,8 +55,8 @@ class MainActivity : AppCompatActivity() {
         //List of subscribers (wich comes from database) in VM is OBSERVED and passed to the adapter
         subscriberViewModel.subscribers.observe(this, {
             Log.e("observable in main", it.toString())
-            binding.subscriberRecyclerView.adapter =
-                SubscriberAdapter(it, { selectedItem: Subscriber -> listItemClicked(selectedItem) })
+            subscriperAdapter.setList(it)
+            subscriperAdapter.notifyDataSetChanged()
         })
     }
 
