@@ -37,14 +37,15 @@ And, these fields (that we are binding from XML to view model class) will be lik
                 android:hint="@string/name"
                 android:text="@={viewModel.inputName}"
                 />
-                ```
+```
 See the attribute ```android:text="@={viewModel.inputName}```? It will be directly connected with a live data attribute in our view model class.
 Got it? We are done with the XML part, now lets go to our view model class.
 
 Take a look in this attribute:
-```@Bindable
+```
+@Bindable
     val inputName = MutableLiveData<String>()
-    ```
+```
 Its connected with our XML file field. Its simple as that. It will retrieve the inputs from the view. Its very simple, and the rest is just observed in the main activity.
 
 
