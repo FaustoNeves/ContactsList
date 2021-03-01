@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
         binding.lifecycleOwner = this
         initRecyclerView()
 
-        subscriberViewModel.message.observe(this, {
+        subscriberViewModel.message.observe(this, { it ->
             it.getContentIfNotHandled()?.let {
                 Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
             }

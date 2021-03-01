@@ -43,22 +43,19 @@ class SubscriberVM(private val repository: RSubscriber) : ViewModel(), Observabl
     }
 
     fun saveOrUpdate() {
-
-        if (inputName.value == null) {
-            statusMessage.value = Event("Don't forget your name")
-        } else if (inputEmail.value == null) {
-            statusMessage.value = Event("Don't forget your email")
-        } else if (inputName.value == null && inputEmail.value == null) {
-            statusMessage.value = Event("You forgot both your name and email!")
-        } else if (Patterns.EMAIL_ADDRESS.matcher(inputEmail.value!!).matches()) {
-            statusMessage.value = Event("Invalid email address")
-        } else {
-            if (isUpdateOrDelete) {
-                subscriberToUpdateOrDelete.name = inputName.value!!
-                subscriberToUpdateOrDelete.email = inputEmail.value!!
-                update(subscriberToUpdateOrDelete)
-            } else {
-                val name = inputName.value!!
+       if (inputName.value.isNullOrBlank()) {
+           statusMessage.value = Event("Don't forget your name")
+       } else if (inputEmail.value.isNullOrBlank()) {
+           statusMessage.value = Event("Don't forget your email")
+       } else if (!Patterns.EMAIL_ADDRESS.matcher(inputEmail.value!!.toString()).matches()) {
+           statusMessage.value = Event("Invalid email address")
+       } else {
+           if (isUpdateOrDelete) {
+               subscriberToUpdateOrDelete.name = inputName.value!!
+               subscriberToUpdateOrDelete.email = inputEmail.value!!
+               update(subscriberToUpdateOrDelete)
+           } else {
+               val name = inputName.value!!
                 val email = inputEmail.value!!
                 insert(Subscriber(0, name, email))
                 inputName.value = null

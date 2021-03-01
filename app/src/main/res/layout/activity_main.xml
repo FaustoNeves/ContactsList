@@ -22,7 +22,6 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColorHint="@color/black"
             app:boxStrokeColor="@color/black"
             app:hintTextColor="@color/black"
             >
@@ -42,7 +41,6 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColorHint="@color/black"
             app:boxStrokeColor="@color/black"
             app:hintTextColor="@color/black"
             >
