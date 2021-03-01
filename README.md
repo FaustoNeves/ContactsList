@@ -9,12 +9,24 @@ wich is just a boiler plate code. You can get all this from here [Google's offic
 About binding data, its the same thing. Less code in the activity, but much more code in the XML file. Thats right, we'll write code in our XML file. 
 To bind data, we can do like this:
 
-Replace the usual method ```setContentView(R.layout.activity_main)``` to ```binding = DataBindingUtil.setContentView(this, R.layout.activity_main)```
+Replace the usual method:
+
+```
+setContentView(R.layout.activity_main)
+``` 
+
+to 
+
+```
+binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+```
+
 The variable binding is initialized like this ```private lateinit var binding: ActivityMainBinding```
 Now, notice the name ActivityMainBinding? Its auto generated, we don't define it (as far as I know).
 
 In XML, we need to wrap ALL our code with a ```<layout></layout>``` tag. After this, we create a ```<data><variable/></data>``` tag. 
 It must be something like this:
+
 ```
 <data>
 
