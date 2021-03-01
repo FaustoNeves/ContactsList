@@ -13,7 +13,7 @@ Replace the usual method ```setContentView(R.layout.activity_main)``` to ```bind
 The variable binding is initialized like this ```private lateinit var binding: ActivityMainBinding```
 Now, notice the name ActivityMainBinding? Its auto generated, we don't define it (as far as I know).
 
-In XML, we need to wrap ALL our code with a ```<layout></layout>""" tag. After this, we create a ```<data><variable/></data>``` tag. 
+In XML, we need to wrap ALL our code with a ```<layout></layout>``` tag. After this, we create a ```<data><variable/></data>``` tag. 
 It must be something like this:
 ```<data>
 
