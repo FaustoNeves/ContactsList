@@ -44,7 +44,7 @@ Got it? We are done with the XML part, now lets go to our view model class.
 Take a look in this attribute:
 ```
 @Bindable
-    val inputName = MutableLiveData<String>()
+val inputName = MutableLiveData<String>()
 ```
 Its connected with our XML file field. Its simple as that. It will retrieve the inputs from the view. Its very simple, and the rest is just observed in the main activity.
 
