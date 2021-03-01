@@ -15,12 +15,13 @@ Now, notice the name ActivityMainBinding? Its auto generated, we don't define it
 
 In XML, we need to wrap ALL our code with a ```<layout></layout>``` tag. After this, we create a ```<data><variable/></data>``` tag. 
 It must be something like this:
-```<data>
+```
+<data>
 
         <variable
             name="viewModel"
             type="br.com.fausto.mypeople.ui.viewmodel.SubscriberVM" />
-    </data>
+</data>
 ```
 
 You see the name "viewModel"? Our variable binding in the main activity will connect these variables in the XML file with our view model class attributes through this
