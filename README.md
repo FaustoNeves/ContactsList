@@ -11,13 +11,13 @@ To bind data, we can do like this:
 
 Replace the usual method:
 
-```
+```kotlin
 setContentView(R.layout.activity_main)
 ``` 
 
 to 
 
-```
+```kotlin
 binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 ```
 
@@ -27,7 +27,7 @@ Now, notice the name ActivityMainBinding? Its auto generated, we don't define it
 In XML, we need to wrap ALL our code with a ```<layout></layout>``` tag. After this, we create a ```<data><variable/></data>``` tag. 
 It must be something like this:
 
-```
+```xml
 <data>
 
         <variable
@@ -38,10 +38,12 @@ It must be something like this:
 
 You see the name "viewModel"? Our variable binding in the main activity will connect these variables in the XML file with our view model class attributes through this
 name field, like this:
-```binding.viewModel = subscriberViewModel```
+```kotlin 
+binding.viewModel = subscriberViewModel
+```
 
 And, these fields (that we are binding from XML to view model class) will be like this:
-```
+```xml
 <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/textInputNameB"
                 android:layout_width="match_parent"
@@ -54,7 +56,7 @@ See the attribute ```android:text="@={viewModel.inputName}```? It will be direct
 Got it? We are done with the XML part, now lets go to our view model class.
 
 Take a look in this attribute:
-```
+```kotlin
 @Bindable
 val inputName = MutableLiveData<String>()
 ```
