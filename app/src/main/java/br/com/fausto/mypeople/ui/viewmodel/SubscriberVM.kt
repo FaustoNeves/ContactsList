@@ -24,7 +24,6 @@ class SubscriberVM(private val repository: RSubscriber) : ViewModel(), Observabl
     val message: LiveData<Event<String>>
         get() = statusMessage
 
-
     @Bindable
     val inputName = MutableLiveData<String>()
 
@@ -37,25 +36,29 @@ class SubscriberVM(private val repository: RSubscriber) : ViewModel(), Observabl
     @Bindable
     val clearOrDeleteButtonText = MutableLiveData<String>()
 
+    @Bindable
+    val cancelActionButtonText = MutableLiveData<String>()
+
     init {
         saveOrUpdateButtonText.value = "Save"
         clearOrDeleteButtonText.value = "Clear All"
+        cancelActionButtonText.value = "Cancel"
     }
 
     fun saveOrUpdate() {
-       if (inputName.value.isNullOrBlank()) {
-           statusMessage.value = Event("Don't forget your name")
-       } else if (inputEmail.value.isNullOrBlank()) {
-           statusMessage.value = Event("Don't forget your email")
-       } else if (!Patterns.EMAIL_ADDRESS.matcher(inputEmail.value!!.toString()).matches()) {
-           statusMessage.value = Event("Invalid email address")
-       } else {
-           if (isUpdateOrDelete) {
-               subscriberToUpdateOrDelete.name = inputName.value!!
-               subscriberToUpdateOrDelete.email = inputEmail.value!!
-               update(subscriberToUpdateOrDelete)
-           } else {
-               val name = inputName.value!!
+        if (inputName.value.isNullOrBlank()) {
+            statusMessage.value = Event("Don't forget your name")
+        } else if (inputEmail.value.isNullOrBlank()) {
+            statusMessage.value = Event("Don't forget your email")
+        } else if (!Patterns.EMAIL_ADDRESS.matcher(inputEmail.value!!.toString()).matches()) {
+            statusMessage.value = Event("Invalid email address")
+        } else {
+            if (isUpdateOrDelete) {
+                subscriberToUpdateOrDelete.name = inputName.value!!
+                subscriberToUpdateOrDelete.email = inputEmail.value!!
+                update(subscriberToUpdateOrDelete)
+            } else {
+                val name = inputName.value!!
                 val email = inputEmail.value!!
                 insert(Subscriber(0, name, email))
                 inputName.value = null
@@ -113,6 +116,18 @@ class SubscriberVM(private val repository: RSubscriber) : ViewModel(), Observabl
         subscriberToUpdateOrDelete = subscriber
         saveOrUpdateButtonText.value = "Update"
         clearOrDeleteButtonText.value = "Delete"
+    }
+
+    fun cancelAction() {
+        if (saveOrUpdateButtonText.value.equals("Save")) {
+            inputName.value = null
+            inputEmail.value = null
+        } else {
+            saveOrUpdateButtonText.value = "Save"
+            clearOrDeleteButtonText.value = "Clear All"
+            inputName.value = null
+            inputEmail.value = null
+        }
     }
 
     override fun addOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {

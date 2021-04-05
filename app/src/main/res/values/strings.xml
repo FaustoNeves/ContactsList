@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MyPeople</string>
+    <string name="app_name">Contacts</string>
     <string name="name">name</string>
     <string name="email">email</string>
 </resources>
