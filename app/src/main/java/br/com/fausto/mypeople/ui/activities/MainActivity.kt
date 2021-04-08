@@ -1,8 +1,6 @@
 package br.com.fausto.mypeople.ui.activities
 
 import android.os.Bundle
-import android.util.Log
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
@@ -48,17 +46,21 @@ class MainActivity : AppCompatActivity() {
         })
 
         findField.addTextChangedListener {
-            Toast.makeText(this, it.toString(), Toast.LENGTH_SHORT).show()
+            subscriberViewModel.subscribers.observe(this, { list ->
+                var tempList = mutableListOf<Subscriber>()
+                for (subscriber in list) {
+                    if (subscriber.name.contains(it.toString())) {
+                        tempList.add(subscriber)
+                    }
+                    if (it.toString().isBlank()) {
+                        subscriperAdapter.setList(list)
+                        subscriperAdapter.notifyDataSetChanged()
+                    }
+                    subscriperAdapter.setList(tempList)
+                    subscriperAdapter.notifyDataSetChanged()
+                }
+            })
         }
-
-    }
-
-    fun findSubscriber(view: View, name: String) {
-        subscriberViewModel.subscribers.observe(this, {
-            if (it.contains(name)) {
-                Toast.makeText(this, "Usuário encontrado", Toast.LENGTH_SHORT).show()
-            }
-        })
     }
 
     private fun initRecyclerView() {
@@ -69,9 +71,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun displaySubscribersList() {
-        //List of subscribers (wich comes from database) in VM is OBSERVED and passed to the adapter
         subscriberViewModel.subscribers.observe(this, {
-            Log.e("observable in main", it.toString())
             subscriperAdapter.setList(it)
             subscriperAdapter.notifyDataSetChanged()
         })
