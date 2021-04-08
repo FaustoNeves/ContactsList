@@ -12,7 +12,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black">
+    android:background="@color/dark_green">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -38,8 +38,7 @@
             android:layout_height="wrap_content"
             app:boxStrokeColor="@color/black"
             app:hintTextColor="@color/black"
-            android:layout_marginBottom="5sp"
-            >
+            android:layout_marginBottom="5sp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/textInputNameB"
@@ -47,7 +46,8 @@
                 android:layout_height="match_parent"
                 android:hint="@string/name"
                 android:text="@={viewModel.inputName}"
-                android:background="@color/yellow" />
+                android:background="@color/light_green"
+                android:singleLine="true" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -59,6 +59,7 @@
             app:boxStrokeColor="@color/black"
             app:hintTextColor="@color/black"
             android:layout_marginBottom="10sp"
+            app:errorEnabled="true"
             >
 
             <com.google.android.material.textfield.TextInputEditText
@@ -66,8 +67,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="@string/email"
-                android:background="@color/yellow"
-                android:text="@={viewModel.inputEmail}" />
+                android:background="@color/light_green"
+                android:singleLine="true"
+                android:text="@={viewModel.inputEmail}"
+                />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -96,6 +99,39 @@
                 android:onClick="@{()->viewModel.cancelAction()}"
                 android:text="@={viewModel.cancelActionButtonText}" />
         </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="15sp"
+            android:text="My Contacts"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="40sp"
+            android:textStyle="italic" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputSearch"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5sp"
+            app:boxStrokeColor="@color/black"
+            app:hintTextColor="@color/black"
+            app:startIconDrawable="@drawable/ic_search"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/textInputSearchEdit"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="10sp"
+                android:background="@color/light_green"
+                android:hint="@string/search"
+                android:singleLine="true" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/subscriber_recycler_view"

@@ -2,8 +2,10 @@ package br.com.fausto.mypeople.ui.activities
 
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,6 +17,7 @@ import br.com.fausto.mypeople.repository.subscriber.RSubscriber
 import br.com.fausto.mypeople.ui.adapters.SubscriberAdapter
 import br.com.fausto.mypeople.ui.viewmodel.SubscriberVM
 import br.com.fausto.mypeople.ui.viewmodel.SubscriberVMFactory
+import com.google.android.material.textfield.TextInputEditText
 
 //https://developer.android.com/jetpack/guide?hl=en-us
 
@@ -23,11 +26,13 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var subscriberViewModel: SubscriberVM
     private lateinit var subscriperAdapter: SubscriberAdapter
+    private lateinit var findField: TextInputEditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        findField = findViewById(R.id.textInputSearchEdit)
         val subscriberDAO = SubscriberDatabase.getInstance(this).subscriberDAO
         val repository = RSubscriber(subscriberDAO)
         val factory = SubscriberVMFactory(repository)
@@ -41,12 +46,24 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
             }
         })
+
+        findField.addTextChangedListener {
+            Toast.makeText(this, it.toString(), Toast.LENGTH_SHORT).show()
+        }
+
+    }
+
+    fun findSubscriber(view: View, name: String) {
+        subscriberViewModel.subscribers.observe(this, {
+            if (it.contains(name)) {
+                Toast.makeText(this, "Usuário encontrado", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
     private fun initRecyclerView() {
         binding.subscriberRecyclerView.layoutManager = LinearLayoutManager(this)
-        subscriperAdapter =
-            SubscriberAdapter { selectedItem: Subscriber -> listItemClicked(selectedItem) }
+        subscriperAdapter = SubscriberAdapter { listItemClicked(it) }
         binding.subscriberRecyclerView.adapter = subscriperAdapter
         displaySubscribersList()
     }
