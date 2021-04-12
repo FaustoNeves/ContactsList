@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView
 import br.com.fausto.mypeople.R
 import br.com.fausto.mypeople.database.subscriber.Subscriber
 import br.com.fausto.mypeople.database.subscriber.SubscriberDatabase
-import br.com.fausto.mypeople.databinding.FragmentHomeBinding
 import br.com.fausto.mypeople.repository.subscriber.RSubscriber
 import br.com.fausto.mypeople.ui.adapters.SubscriberAdapter
 import br.com.fausto.mypeople.ui.viewmodel.SubscriberVM
@@ -29,23 +28,21 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        val subscriberDAO =
-            SubscriberDatabase.getInstance(activity?.applicationContext!!).subscriberDAO
-        val repository = RSubscriber(subscriberDAO)
-        val factory = SubscriberVMFactory(repository)
-        return FragmentHomeBinding.inflate(inflater, container, false).apply {
-            lifecycleOwner = viewLifecycleOwner
-            subscriberViewModel =
-                ViewModelProvider(this@HomeFragment, factory).get(SubscriberVM::class.java)
-        }.root
+        return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initRecyclerView()
+        val subscriberDAO =
+            SubscriberDatabase.getInstance(activity?.applicationContext!!).subscriberDAO
+        val repository = RSubscriber(subscriberDAO)
+        val factory = SubscriberVMFactory(repository)
+        subscriberViewModel =
+            ViewModelProvider(this@HomeFragment, factory).get(SubscriberVM::class.java)
 
+        initRecyclerView()
+        findField = requireView().findViewById(R.id.textInputSearchEdit)
         findField.addTextChangedListener {
             subscriberViewModel.subscribers.observe(viewLifecycleOwner, { list ->
                 var tempList = mutableListOf<Subscriber>()

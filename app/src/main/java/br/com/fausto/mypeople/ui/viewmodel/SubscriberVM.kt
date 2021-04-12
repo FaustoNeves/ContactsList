@@ -45,24 +45,24 @@ class SubscriberVM(private val repository: RSubscriber) : ViewModel(), Observabl
         cancelActionButtonText.value = "Cancel"
     }
 
-    fun saveOrUpdate() {
-        if (inputName.value.isNullOrBlank()) {
+    fun saveOrUpdate(name: String, email: String) {
+        if (name.isBlank()) {
             statusMessage.value = Event("Don't forget your name")
-        } else if (inputEmail.value.isNullOrBlank()) {
+        } else if (email.isBlank()) {
             statusMessage.value = Event("Don't forget your email")
-        } else if (!Patterns.EMAIL_ADDRESS.matcher(inputEmail.value!!.toString()).matches()) {
+        } else if (!Patterns.EMAIL_ADDRESS.matcher(email.toString()).matches()) {
             statusMessage.value = Event("Invalid email address")
         } else {
             if (isUpdateOrDelete) {
-                subscriberToUpdateOrDelete.name = inputName.value!!
-                subscriberToUpdateOrDelete.email = inputEmail.value!!
+                subscriberToUpdateOrDelete.name = name
+                subscriberToUpdateOrDelete.email = email
                 update(subscriberToUpdateOrDelete)
             } else {
-                val name = inputName.value!!
-                val email = inputEmail.value!!
-                insert(Subscriber(0, name, email))
-                inputName.value = null
-                inputEmail.value = null
+                val subscriberName = name
+                val subscriberEmail = email
+                insert(Subscriber(0, subscriberName, subscriberEmail))
+//                inputName.value = null
+//                inputEmail.value = null
             }
         }
     }

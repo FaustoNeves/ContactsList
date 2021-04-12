@@ -1,41 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/dark_green"
+    android:orientation="vertical"
+    tools:context=".ui.fragments.RegisterFragment">
 
-    <data>
-
-        <variable
-            name="viewModel"
-            type="br.com.fausto.mypeople.ui.viewmodel.SubscriberVM" />
-    </data>
-
-    <LinearLayout
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputNameA"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/dark_green"
-        android:orientation="vertical"
-        tools:context=".ui.fragments.RegisterFragment">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50sp"
+        android:layout_marginBottom="10sp">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputNameA"
-            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/textInputName"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10sp"
-            android:layout_marginTop="50sp"
-            >
+            android:layout_height="match_parent"
+            android:background="@color/light_green"
+            android:hint="@string/name"
+            android:singleLine="true" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/textInputNameB"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/light_green"
-                android:hint="@string/name"
-                android:singleLine="true"
-                android:text="@={viewModel.inputName}" />
-
-        </com.google.android.material.textfield.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textInputEmailA"
@@ -45,13 +34,12 @@
             android:layout_marginBottom="10sp">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/textInputEmailB"
+                android:id="@+id/textInputEmail"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/light_green"
                 android:hint="@string/email"
-                android:singleLine="true"
-                android:text="@={viewModel.inputEmail}" />
+                android:singleLine="true" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -63,13 +51,12 @@
             android:layout_marginBottom="10sp">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/textInputCelB"
+                android:id="@+id/textInputCel"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/light_green"
                 android:hint="@string/phone_number"
-                android:singleLine="true"
-                android:text="@={viewModel.inputEmail}" />
+                android:singleLine="true" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -82,20 +69,12 @@
             <Button
                 android:id="@+id/save_update_button"
                 style="@style/button_main_activity"
-                android:onClick="@{()->viewModel.saveOrUpdate()}"
-                android:text="@={viewModel.saveOrUpdateButtonText}" />
+                android:text="@string/register"
+                />
 
             <Button
                 android:id="@+id/clear_delete_button"
                 style="@style/button_main_activity"
-                android:onClick="@{()->viewModel.clearAllOrDelete()}"
-                android:text="@={viewModel.clearOrDeleteButtonText}" />
-
-            <Button
-                android:id="@+id/cancel_button"
-                style="@style/button_main_activity"
-                android:onClick="@{()->viewModel.cancelAction()}"
-                android:text="@={viewModel.cancelActionButtonText}" />
+                android:text="@string/cancel" />
         </LinearLayout>
-    </LinearLayout>
-</layout>
+</LinearLayout>
