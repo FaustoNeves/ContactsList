@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import br.com.fausto.mypeople.R
@@ -41,11 +42,23 @@ class RegisterFragment : Fragment() {
         subscriberViewModel =
             ViewModelProvider(this@RegisterFragment, factory).get(SubscriberVM::class.java)
 
-        var confirmButton = requireView().findViewById<Button>(R.id.save_update_button)
-        var cancelButton = requireView().findViewById<Button>(R.id.clear_delete_button)
+        val confirmButton = requireView().findViewById<Button>(R.id.save_update_button)
+        val clearButton = requireView().findViewById<Button>(R.id.clear_button)
+
+        subscriberViewModel.message.observe(viewLifecycleOwner, { it ->
+            it.getContentIfNotHandled()?.let { message ->
+                Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+            }
+        })
 
         confirmButton.setOnClickListener {
             registerContact(inputName.text.toString(), inputEmail.text.toString())
+        }
+
+        clearButton.setOnClickListener {
+            inputName.setText("")
+            inputEmail.setText("")
+            inputCel.setText("")
         }
     }
 

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/dark_green"
     android:orientation="vertical"
     tools:context=".ui.fragments.RegisterFragment">
@@ -11,8 +12,12 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputNameA"
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+        app:startIconDrawable="@drawable/ic_register"
+        app:hintTextColor="@color/black"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:layout_marginTop="50sp"
         android:layout_marginBottom="10sp">
 
@@ -29,8 +34,12 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textInputEmailA"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+            app:startIconDrawable="@drawable/ic_email"
+            app:hintTextColor="@color/black"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
             android:layout_marginBottom="10sp">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -46,8 +55,12 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textInputCelA"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+            app:startIconDrawable="@drawable/ic_contact_phone"
+            app:hintTextColor="@color/black"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
             android:layout_marginBottom="10sp">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -63,6 +76,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
             android:layout_marginBottom="20sp"
             android:orientation="horizontal">
 
@@ -70,11 +85,14 @@
                 android:id="@+id/save_update_button"
                 style="@style/button_main_activity"
                 android:text="@string/register"
+                android:layout_margin="2sp"
                 />
 
             <Button
-                android:id="@+id/clear_delete_button"
+                android:id="@+id/clear_button"
                 style="@style/button_main_activity"
-                android:text="@string/cancel" />
+                android:text="@string/clear"
+                android:layout_margin="2sp"
+                />
         </LinearLayout>
 </LinearLayout>
