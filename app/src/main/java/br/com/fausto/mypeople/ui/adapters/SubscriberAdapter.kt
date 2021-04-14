@@ -37,7 +37,7 @@ class SubscriberAdapter(
     }
 }
 
-class MyViewHolder(val binding: SubscriberListItemBinding) : RecyclerView.ViewHolder(binding.root) {
+class MyViewHolder(private val binding: SubscriberListItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(subscriber: Subscriber, clickListener: (Subscriber) -> Unit) {
         binding.nameTextView.text = subscriber.name

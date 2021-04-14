@@ -1,9 +1,11 @@
 package br.com.fausto.mypeople.ui.fragments
 
+import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
@@ -60,25 +62,48 @@ class HomeFragment : Fragment() {
                 }
             })
         }
+
+        subscriberViewModel.message.observe(viewLifecycleOwner, { it ->
+            it.getContentIfNotHandled()?.let { message ->
+                Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
-    fun initRecyclerView() {
-        var recyclerView = getView()?.findViewById<RecyclerView>(R.id.subscriber_recycler_view)
+    private fun initRecyclerView() {
+        val recyclerView = view?.findViewById<RecyclerView>(R.id.subscriber_recycler_view)
         recyclerView!!.layoutManager = LinearLayoutManager(context)
         subscriperAdapter = SubscriberAdapter { listItemClicked(it) }
         recyclerView.adapter = subscriperAdapter
         displaySubscribersList()
     }
 
-    fun displaySubscribersList() {
+    private fun displaySubscribersList() {
         subscriberViewModel.subscribers.observe(viewLifecycleOwner, {
             subscriperAdapter.setList(it)
             subscriperAdapter.notifyDataSetChanged()
         })
     }
 
-    fun listItemClicked(subscriber: Subscriber) {
-        Toast.makeText(context, subscriber.name, Toast.LENGTH_SHORT).show()
-        subscriberViewModel.initUpdateAndDelete(subscriber)
+    private fun listItemClicked(subscriber: Subscriber) {
+
+        val dialog = Dialog(requireContext())
+        dialog.setContentView(R.layout.contact_dialog)
+        dialog.show()
+        val closeLayout: LinearLayout = dialog.findViewById(R.id.cancel_layout)
+        val excludeLayout: LinearLayout = dialog.findViewById(R.id.exclude_layout)
+        val editLayout: LinearLayout = dialog.findViewById(R.id.edit_layout)
+
+        closeLayout.setOnClickListener {
+            dialog.dismiss()
+        }
+        excludeLayout.setOnClickListener {
+            subscriberViewModel.delete(subscriber)
+            subscriperAdapter.notifyDataSetChanged()
+            dialog.dismiss()
+        }
+        editLayout.setOnClickListener {
+
+        }
     }
 }
