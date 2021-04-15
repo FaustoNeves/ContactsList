@@ -4,10 +4,11 @@
     <item
         android:id="@+id/homeFragment"
         android:icon="@drawable/ic_home"
-        android:title="Contacts List" />
+        android:title="@string/contacts_list"
+        />
 
     <item
         android:id="@+id/registerFragment"
         android:icon="@drawable/ic_register"
-        android:title="Register Contact" />
+        android:title="@string/register_contact" />
 </menu>

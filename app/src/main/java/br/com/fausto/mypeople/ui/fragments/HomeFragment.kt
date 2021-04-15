@@ -89,11 +89,18 @@ class HomeFragment : Fragment() {
 
         val dialog = Dialog(requireContext())
         dialog.setContentView(R.layout.contact_dialog)
-        dialog.show()
         val closeLayout: LinearLayout = dialog.findViewById(R.id.cancel_layout)
         val excludeLayout: LinearLayout = dialog.findViewById(R.id.exclude_layout)
         val editLayout: LinearLayout = dialog.findViewById(R.id.edit_layout)
 
+//        val editTextView: TextView = dialog.findViewById(R.id.edit_text)
+//        editTextView.text = subscriber.email
+//        var editText = editTextView.text
+//        editText = subscriber.email
+//        Log.e("SUBSCRIBER", subscriber.email)
+//        Log.e("SUBSCRIBER", editText)
+
+        dialog.show()
         closeLayout.setOnClickListener {
             dialog.dismiss()
         }

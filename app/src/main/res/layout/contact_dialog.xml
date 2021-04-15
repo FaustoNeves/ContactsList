@@ -3,9 +3,60 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@color/dark_green"
+    android:background="@color/black"
     android:orientation="vertical"
     app:layout_constraintCircleRadius="@dimen/material_emphasis_high_type">
+
+    <LinearLayout
+        android:id="@+id/call_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15sp"
+        android:layout_marginTop="15sp"
+        android:layout_marginEnd="100sp"
+        android:layout_marginBottom="15sp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_contact_phone"
+            android:backgroundTint="@color/yellow"
+            android:foregroundTint="@color/yellow"
+            app:tint="@color/yellow" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5sp"
+            android:text="@string/call"
+            android:textColor="@color/yellow" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/email_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15sp"
+        android:layout_marginTop="15sp"
+        android:layout_marginEnd="100sp"
+        android:layout_marginBottom="15sp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_email"
+            app:tint="@color/yellow" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5sp"
+            android:text="@string/send_email"
+            android:textColor="@color/yellow"
+            />
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/edit_layout"
@@ -15,23 +66,21 @@
         android:layout_marginTop="15sp"
         android:layout_marginEnd="100sp"
         android:layout_marginBottom="15sp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/cancel_layout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:orientation="horizontal">
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_edit" />
+            android:src="@drawable/ic_edit"
+            app:tint="@color/yellow"
+            />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5sp"
             android:text="@string/edit"
-            android:textColor="@color/black" />
+            android:textColor="@color/yellow" />
     </LinearLayout>
 
     <LinearLayout
@@ -42,23 +91,21 @@
         android:layout_marginTop="15sp"
         android:layout_marginEnd="100sp"
         android:layout_marginBottom="15sp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:orientation="horizontal">
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_delete" />
+            android:src="@drawable/ic_delete"
+            app:tint="@color/yellow"
+            />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5sp"
             android:text="@string/exclude"
-            android:textColor="@color/black" />
+            android:textColor="@color/yellow" />
     </LinearLayout>
 
     <LinearLayout
@@ -69,23 +116,21 @@
         android:layout_marginTop="15sp"
         android:layout_marginEnd="100sp"
         android:layout_marginBottom="25sp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/exclude_layout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:orientation="horizontal">
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_cancel" />
+            android:src="@drawable/ic_cancel"
+            app:tint="@color/yellow"
+            />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5sp"
             android:text="@string/close"
-            android:textColor="@color/black" />
+            android:textColor="@color/yellow" />
     </LinearLayout>
 
 </LinearLayout>

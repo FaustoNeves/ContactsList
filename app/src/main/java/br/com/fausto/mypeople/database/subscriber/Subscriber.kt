@@ -13,5 +13,7 @@ data class Subscriber(
     @ColumnInfo(name = "subscriber_name")
     var name: String,
     @ColumnInfo(name = "subscriber_email")
-    var email: String
+    var email: String,
+    @ColumnInfo(name = "subscriber_number")
+    var phoneNumber: String
 )

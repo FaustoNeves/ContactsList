@@ -1,7 +1,5 @@
 package br.com.fausto.mypeople.ui.viewmodel
 
-import android.util.Patterns
-import androidx.databinding.Bindable
 import androidx.databinding.Observable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -24,45 +22,16 @@ class SubscriberVM(private val repository: RSubscriber) : ViewModel(), Observabl
     val message: LiveData<Event<String>>
         get() = statusMessage
 
-    @Bindable
-    val inputName = MutableLiveData<String>()
-
-    @Bindable
-    val inputEmail = MutableLiveData<String>()
-
-    @Bindable
-    val saveOrUpdateButtonText = MutableLiveData<String>()
-
-    @Bindable
-    val clearOrDeleteButtonText = MutableLiveData<String>()
-
-    @Bindable
-    val cancelActionButtonText = MutableLiveData<String>()
-
-    init {
-        saveOrUpdateButtonText.value = "Save"
-        clearOrDeleteButtonText.value = "Clear All"
-        cancelActionButtonText.value = "Cancel"
-    }
-
-    fun saveOrUpdate(name: String, email: String) {
+    fun saveOrUpdate(name: String, email: String, phoneNumber: String) {
         if (name.isBlank()) {
             statusMessage.value = Event("Don't forget your name")
-        } else if (email.isBlank()) {
-            statusMessage.value = Event("Don't forget your email")
-        } else if (!Patterns.EMAIL_ADDRESS.matcher(email.toString()).matches()) {
-            statusMessage.value = Event("Invalid email address")
         } else {
             if (isUpdateOrDelete) {
                 subscriberToUpdateOrDelete.name = name
                 subscriberToUpdateOrDelete.email = email
                 update(subscriberToUpdateOrDelete)
             } else {
-                val subscriberName = name
-                val subscriberEmail = email
-                insert(Subscriber(0, subscriberName, subscriberEmail))
-//                inputName.value = null
-//                inputEmail.value = null
+                insert(Subscriber(0, name, email, phoneNumber))
             }
         }
     }
@@ -84,22 +53,14 @@ class SubscriberVM(private val repository: RSubscriber) : ViewModel(), Observabl
     fun update(subscriber: Subscriber): Job =
         viewModelScope.launch {
             repository.update(subscriber)
-            inputName.value = null
-            inputEmail.value = null
             isUpdateOrDelete = false
-            saveOrUpdateButtonText.value = "Save"
-            clearOrDeleteButtonText.value = "Clear All"
             statusMessage.value = Event("Successfully updated")
         }
 
     fun delete(subscriber: Subscriber): Job =
         viewModelScope.launch {
             repository.delete(subscriber)
-            inputName.value = null
-            inputEmail.value = null
             isUpdateOrDelete = false
-            saveOrUpdateButtonText.value = "Save"
-            clearOrDeleteButtonText.value = "Clear All"
             statusMessage.value = Event("Successfully deleted")
         }
 
@@ -108,27 +69,6 @@ class SubscriberVM(private val repository: RSubscriber) : ViewModel(), Observabl
             repository.deleteAll()
             statusMessage.value = Event("deleted everything")
         }
-
-    fun initUpdateAndDelete(subscriber: Subscriber) {
-        inputName.value = subscriber.name
-        inputEmail.value = subscriber.email
-        isUpdateOrDelete = true
-        subscriberToUpdateOrDelete = subscriber
-        saveOrUpdateButtonText.value = "Update"
-        clearOrDeleteButtonText.value = "Delete"
-    }
-
-    fun cancelAction() {
-        if (saveOrUpdateButtonText.value.equals("Save")) {
-            inputName.value = null
-            inputEmail.value = null
-        } else {
-            saveOrUpdateButtonText.value = "Save"
-            clearOrDeleteButtonText.value = "Clear All"
-            inputName.value = null
-            inputEmail.value = null
-        }
-    }
 
     override fun addOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {
 

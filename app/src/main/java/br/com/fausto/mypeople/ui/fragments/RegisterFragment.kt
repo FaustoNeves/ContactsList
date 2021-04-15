@@ -52,7 +52,11 @@ class RegisterFragment : Fragment() {
         })
 
         confirmButton.setOnClickListener {
-            registerContact(inputName.text.toString(), inputEmail.text.toString())
+            registerContact(
+                inputName.text.toString(),
+                inputEmail.text.toString(),
+                inputCel.text.toString()
+            )
         }
 
         clearButton.setOnClickListener {
@@ -62,7 +66,7 @@ class RegisterFragment : Fragment() {
         }
     }
 
-    private fun registerContact(name: String, email: String) {
-        subscriberViewModel.saveOrUpdate(name, email)
+    private fun registerContact(name: String, email: String, phoneNumber: String) {
+        subscriberViewModel.saveOrUpdate(name, email, phoneNumber)
     }
 }

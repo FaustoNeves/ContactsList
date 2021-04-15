@@ -12,4 +12,8 @@
     <string name="close">Close</string>
     <string name="exclude">Exclude</string>
     <string name="edit">Edit</string>
+    <string name="call">Call</string>
+    <string name="send_email">Send email</string>
+    <string name="contacts_list">Contacts List</string>
+    <string name="register_contact">Register Contact</string>
 </resources>

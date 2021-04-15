@@ -5,7 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [Subscriber::class], version = 1, exportSchema = false)
+@Database(entities = [Subscriber::class], version = 3, exportSchema = false)
 abstract class SubscriberDatabase : RoomDatabase() {
 
     abstract val subscriberDAO: SubscriberDAO
@@ -23,7 +23,9 @@ abstract class SubscriberDatabase : RoomDatabase() {
                         context.applicationContext,
                         SubscriberDatabase::class.java,
                         "subscriber_data_base"
-                    ).build()
+                    )
+                        .fallbackToDestructiveMigration()
+                        .build()
                 }
                 return instance
             }
