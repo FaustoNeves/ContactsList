@@ -1,11 +1,11 @@
 package br.com.fausto.mypeople.ui.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import br.com.fausto.mypeople.R
 import br.com.fausto.mypeople.database.subscriber.Subscriber
@@ -35,7 +35,6 @@ class RegisterFragment : Fragment() {
         val subscriberDAO =
             SubscriberDatabase.getInstance(activity?.applicationContext!!).subscriberDAO
         repository = RSubscriber(subscriberDAO)
-//        setupUpdateSubscriber()
         return inflater.inflate(R.layout.fragment_register, container, false)
     }
 
@@ -43,9 +42,7 @@ class RegisterFragment : Fragment() {
         inputName = requireView().findViewById(R.id.textInputName)
         inputEmail = requireView().findViewById(R.id.textInputEmail)
         inputCel = requireView().findViewById(R.id.textInputCel)
-
         super.onViewCreated(view, savedInstanceState)
-
         val confirmButton = requireView().findViewById<Button>(R.id.save_update_button)
         val clearButton = requireView().findViewById<Button>(R.id.clear_button)
 
@@ -62,55 +59,46 @@ class RegisterFragment : Fragment() {
             )
         }
 
-        clearButton.setOnClickListener {
-            clearFields()
-        }
+        clearButton.setOnClickListener { clearFields() }
+
     }
 
     private fun setupUpdateState() {
-//        GlobalScope.launch {
         if (subscriberToUpdate != null) {
-            Log.e("@@@@@@@@@@@@", "update")
-            Log.e("@@@@@@@@@@@@", subscriberToUpdate!!.name)
-            Log.e("@@@@@@@@@@@@", subscriberToUpdate!!.email)
-//                val subscriberToUpdate = repository.searchById(subscriberToUpdate!!.id!!)
             inputName.setText(subscriberToUpdate!!.name)
             inputEmail.setText(subscriberToUpdate!!.email)
             inputCel.setText(subscriberToUpdate!!.phoneNumber)
-        } else {
-            Log.e("@@@@@@@@@@@@", "else")
         }
-//        }
     }
 
     private fun saveContact(subscriber: Subscriber) {
-        GlobalScope.launch {
+        var message: String? = null
+        val job = GlobalScope.launch {
             if (subscriberToUpdate != null) {
                 subscriberToUpdate!!.name = inputName.text.toString()
                 subscriberToUpdate!!.email = inputEmail.text.toString()
                 subscriberToUpdate!!.phoneNumber = inputCel.text.toString()
                 repository.update(subscriberToUpdate!!)
-                Log.e("@@@@@@@@ ID UPDATE", subscriber.id.toString())
+                message = "1"
             } else {
+                message = "2"
                 repository.insert(subscriber)
-                Log.e("@@@@@@@@ ID AO SALVAR", subscriber.id.toString())
             }
         }
+
+        job.invokeOnCompletion { showToast(message!!) }
+
         clearFields()
     }
 
-    private fun setupUpdateSubscriber() {
-        GlobalScope.launch {
-            if (subscriberToUpdate != null) {
-                repository.searchById(subscriberToUpdate!!.id)
-            }
-        }
-    }
-
-    fun clearFields() {
+    private fun clearFields() {
         inputName.setText("")
         inputEmail.setText("")
         inputCel.setText("")
+    }
+
+    fun showToast(message: String) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 
     override fun onDestroy() {

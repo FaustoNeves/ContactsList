@@ -7,7 +7,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/light_blue"
     android:orientation="vertical"
-    tools:context=".ui.fragments.RegisterFragment">
+    tools:context=".ui.fragments.RegisterFragment"
+    >
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputNameA"

@@ -20,4 +20,8 @@ class MainActivity : AppCompatActivity() {
         bottomNavBar.setupWithNavController(navController)
 
     }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+    }
 }

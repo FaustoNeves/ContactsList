@@ -1,6 +1,11 @@
 package br.com.fausto.mypeople.ui.fragments
 
 import android.app.Dialog
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -20,6 +25,7 @@ import br.com.fausto.mypeople.ui.adapters.SubscriberAdapter
 import br.com.fausto.mypeople.ui.viewmodel.SubscriberVM
 import br.com.fausto.mypeople.ui.viewmodel.SubscriberVMFactory
 import com.google.android.material.textfield.TextInputEditText
+
 
 class HomeFragment : Fragment() {
 
@@ -93,11 +99,31 @@ class HomeFragment : Fragment() {
         val closeLayout: LinearLayout = dialog.findViewById(R.id.cancel_layout)
         val excludeLayout: LinearLayout = dialog.findViewById(R.id.exclude_layout)
         val editLayout: LinearLayout = dialog.findViewById(R.id.edit_layout)
+        val callLayout: LinearLayout = dialog.findViewById(R.id.call_layout)
+        val emailLayout: LinearLayout = dialog.findViewById(R.id.email_layout)
 
         dialog.show()
         closeLayout.setOnClickListener {
             dialog.dismiss()
         }
+
+        callLayout.setOnClickListener {
+            context?.makePhoneCall(subscriber.phoneNumber)
+        }
+
+        emailLayout.setOnClickListener {
+            val clipboard =
+                requireActivity().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager?
+            val clip = ClipData.newPlainText("SUBSCRIBER_EMAIL", subscriber.email)
+            clipboard!!.setPrimaryClip(clip)
+            Toast.makeText(
+                requireContext(),
+                "Email address added to your clipboard",
+                Toast.LENGTH_SHORT
+            ).show()
+            composeEmail()
+        }
+
         excludeLayout.setOnClickListener {
             subscriberViewModel.delete(subscriber)
             subscriperAdapter.notifyDataSetChanged()
@@ -112,5 +138,20 @@ class HomeFragment : Fragment() {
                 .commit()
             dialog.dismiss()
         }
+    }
+
+    private fun Context.makePhoneCall(number: String): Boolean = try {
+        val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$number"))
+        startActivity(intent)
+        true
+    } catch (e: Exception) {
+        e.printStackTrace()
+        false
+    }
+
+    private fun composeEmail() {
+        val email = Intent(Intent.ACTION_SEND)
+        email.type = "message/rfc822"
+        startActivity(Intent.createChooser(email, "Choose an app:"))
     }
 }
