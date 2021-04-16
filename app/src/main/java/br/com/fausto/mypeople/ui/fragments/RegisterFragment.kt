@@ -72,22 +72,17 @@ class RegisterFragment : Fragment() {
     }
 
     private fun saveContact(subscriber: Subscriber) {
-        var message: String? = null
-        val job = GlobalScope.launch {
+        GlobalScope.launch {
             if (subscriberToUpdate != null) {
                 subscriberToUpdate!!.name = inputName.text.toString()
                 subscriberToUpdate!!.email = inputEmail.text.toString()
                 subscriberToUpdate!!.phoneNumber = inputCel.text.toString()
                 repository.update(subscriberToUpdate!!)
-                message = "1"
             } else {
-                message = "2"
                 repository.insert(subscriber)
             }
         }
-
-        job.invokeOnCompletion { showToast(message!!) }
-
+        Toast.makeText(requireContext(), "Operation success", Toast.LENGTH_SHORT).show()
         clearFields()
     }
 
@@ -95,10 +90,6 @@ class RegisterFragment : Fragment() {
         inputName.setText("")
         inputEmail.setText("")
         inputCel.setText("")
-    }
-
-    fun showToast(message: String) {
-        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 
     override fun onDestroy() {
