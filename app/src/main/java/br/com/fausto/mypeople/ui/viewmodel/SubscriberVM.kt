@@ -16,46 +16,57 @@ class SubscriberVM(private val repository: RSubscriber) : ViewModel(), Observabl
     val subscribers = repository.subscribers
     private var isUpdateOrDelete = false
     private lateinit var subscriberToUpdateOrDelete: Subscriber
+    var nameEdit = MutableLiveData<String>()
+    var subscriberUpdated: Subscriber? = null
 
     private val statusMessage = MutableLiveData<Event<String>>()
 
     val message: LiveData<Event<String>>
         get() = statusMessage
 
-    fun saveOrUpdate(name: String, email: String, phoneNumber: String) {
-        if (name.isBlank()) {
-            statusMessage.value = Event("Don't forget your name")
-        } else {
-            if (isUpdateOrDelete) {
-                subscriberToUpdateOrDelete.name = name
-                subscriberToUpdateOrDelete.email = email
-                update(subscriberToUpdateOrDelete)
-            } else {
-                insert(Subscriber(0, name, email, phoneNumber))
-            }
-        }
+//    fun saveOrUpdate(name: String, email: String, phoneNumber: String) {
+//        if (name.isBlank()) {
+//            statusMessage.value = Event("Don't forget your name")
+//        } else {
+//            if (isUpdateOrDelete) {
+//                subscriberUpdated = subscribers.value!!.find { it.name.equals(nameEdit) }
+//                subscriberUpdated!!.name = name
+//                subscriberUpdated!!.email = email
+//                update(subscriberUpdated!!)
+//            } else {
+//                insert(Subscriber(0, name, email, phoneNumber))
+//            }
+//        }
+//    }
+
+    fun setupUpdate(subscriber: Subscriber) {
+        //subscriberEdit = subscribers.value!!.find { it.name.equals(nameEdit) }
+        subscriberUpdated = subscriber
+        isUpdateOrDelete = true
+        nameEdit.value = subscriber.name
     }
 
-    fun clearAllOrDelete() {
-        if (isUpdateOrDelete) {
-            delete(subscriberToUpdateOrDelete)
-        } else {
-            clearAll()
-        }
-    }
-
-    fun insert(subscriber: Subscriber): Job =
-        viewModelScope.launch {
-            repository.insert(subscriber)
-            statusMessage.value = Event("Successfully registered")
-        }
-
-    fun update(subscriber: Subscriber): Job =
-        viewModelScope.launch {
-            repository.update(subscriber)
-            isUpdateOrDelete = false
-            statusMessage.value = Event("Successfully updated")
-        }
+//    fun clearAllOrDelete() {
+//        if (isUpdateOrDelete) {
+//            delete(subscriberToUpdateOrDelete)
+//        } else {
+//            subscribers.value!!.find { it.name == "oi" }
+//            clearAll()
+//        }
+//    }
+//
+//    fun insert(subscriber: Subscriber): Job =
+//        viewModelScope.launch {
+//            repository.insert(subscriber)
+//            statusMessage.value = Event("Successfully registered")
+//        }
+//
+//    fun update(subscriber: Subscriber): Job =
+//        viewModelScope.launch {
+//            repository.update(subscriber)
+//            isUpdateOrDelete = false
+//            statusMessage.value = Event("Successfully updated")
+//        }
 
     fun delete(subscriber: Subscriber): Job =
         viewModelScope.launch {
@@ -64,11 +75,11 @@ class SubscriberVM(private val repository: RSubscriber) : ViewModel(), Observabl
             statusMessage.value = Event("Successfully deleted")
         }
 
-    fun clearAll(): Job =
-        viewModelScope.launch {
-            repository.deleteAll()
-            statusMessage.value = Event("deleted everything")
-        }
+//    fun clearAll(): Job =
+//        viewModelScope.launch {
+//            repository.deleteAll()
+//            statusMessage.value = Event("deleted everything")
+//        }
 
     override fun addOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {
 

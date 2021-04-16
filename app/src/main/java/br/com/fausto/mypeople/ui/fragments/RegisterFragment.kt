@@ -1,31 +1,41 @@
 package br.com.fausto.mypeople.ui.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import br.com.fausto.mypeople.R
+import br.com.fausto.mypeople.database.subscriber.Subscriber
 import br.com.fausto.mypeople.database.subscriber.SubscriberDatabase
 import br.com.fausto.mypeople.repository.subscriber.RSubscriber
-import br.com.fausto.mypeople.ui.viewmodel.SubscriberVM
-import br.com.fausto.mypeople.ui.viewmodel.SubscriberVMFactory
 import com.google.android.material.textfield.TextInputEditText
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+
 
 class RegisterFragment : Fragment() {
 
-    private lateinit var subscriberViewModel: SubscriberVM
     private lateinit var inputName: TextInputEditText
     private lateinit var inputEmail: TextInputEditText
     private lateinit var inputCel: TextInputEditText
+    lateinit var repository: RSubscriber
+    var subscriberToUpdate: Subscriber? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        val bundle = this.arguments
+        if (bundle != null) {
+            subscriberToUpdate = bundle.getSerializable("SUBSCRIBER_UPDATE") as Subscriber?
+        }
+        val subscriberDAO =
+            SubscriberDatabase.getInstance(activity?.applicationContext!!).subscriberDAO
+        repository = RSubscriber(subscriberDAO)
+//        setupUpdateSubscriber()
         return inflater.inflate(R.layout.fragment_register, container, false)
     }
 
@@ -35,38 +45,76 @@ class RegisterFragment : Fragment() {
         inputCel = requireView().findViewById(R.id.textInputCel)
 
         super.onViewCreated(view, savedInstanceState)
-        val subscriberDAO =
-            SubscriberDatabase.getInstance(activity?.applicationContext!!).subscriberDAO
-        val repository = RSubscriber(subscriberDAO)
-        val factory = SubscriberVMFactory(repository)
-        subscriberViewModel =
-            ViewModelProvider(this@RegisterFragment, factory).get(SubscriberVM::class.java)
 
         val confirmButton = requireView().findViewById<Button>(R.id.save_update_button)
         val clearButton = requireView().findViewById<Button>(R.id.clear_button)
 
-        subscriberViewModel.message.observe(viewLifecycleOwner, { it ->
-            it.getContentIfNotHandled()?.let { message ->
-                Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-            }
-        })
+        setupUpdateState()
 
         confirmButton.setOnClickListener {
-            registerContact(
-                inputName.text.toString(),
-                inputEmail.text.toString(),
-                inputCel.text.toString()
+            saveContact(
+                Subscriber(
+                    0,
+                    inputName.text.toString(),
+                    inputEmail.text.toString(),
+                    inputCel.text.toString()
+                )
             )
         }
 
         clearButton.setOnClickListener {
-            inputName.setText("")
-            inputEmail.setText("")
-            inputCel.setText("")
+            clearFields()
         }
     }
 
-    private fun registerContact(name: String, email: String, phoneNumber: String) {
-        subscriberViewModel.saveOrUpdate(name, email, phoneNumber)
+    private fun setupUpdateState() {
+//        GlobalScope.launch {
+        if (subscriberToUpdate != null) {
+            Log.e("@@@@@@@@@@@@", "update")
+            Log.e("@@@@@@@@@@@@", subscriberToUpdate!!.name)
+            Log.e("@@@@@@@@@@@@", subscriberToUpdate!!.email)
+//                val subscriberToUpdate = repository.searchById(subscriberToUpdate!!.id!!)
+            inputName.setText(subscriberToUpdate!!.name)
+            inputEmail.setText(subscriberToUpdate!!.email)
+            inputCel.setText(subscriberToUpdate!!.phoneNumber)
+        } else {
+            Log.e("@@@@@@@@@@@@", "else")
+        }
+//        }
+    }
+
+    private fun saveContact(subscriber: Subscriber) {
+        GlobalScope.launch {
+            if (subscriberToUpdate != null) {
+                subscriberToUpdate!!.name = inputName.text.toString()
+                subscriberToUpdate!!.email = inputEmail.text.toString()
+                subscriberToUpdate!!.phoneNumber = inputCel.text.toString()
+                repository.update(subscriberToUpdate!!)
+                Log.e("@@@@@@@@ ID UPDATE", subscriber.id.toString())
+            } else {
+                repository.insert(subscriber)
+                Log.e("@@@@@@@@ ID AO SALVAR", subscriber.id.toString())
+            }
+        }
+        clearFields()
+    }
+
+    private fun setupUpdateSubscriber() {
+        GlobalScope.launch {
+            if (subscriberToUpdate != null) {
+                repository.searchById(subscriberToUpdate!!.id)
+            }
+        }
+    }
+
+    fun clearFields() {
+        inputName.setText("")
+        inputEmail.setText("")
+        inputCel.setText("")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        subscriberToUpdate = null
     }
 }

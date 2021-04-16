@@ -3,6 +3,7 @@ package br.com.fausto.mypeople.database.subscriber
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.io.Serializable
 
 @Entity(tableName = "subscriber_data_table")
 data class Subscriber(
@@ -16,4 +17,4 @@ data class Subscriber(
     var email: String,
     @ColumnInfo(name = "subscriber_number")
     var phoneNumber: String
-)
+) : Serializable

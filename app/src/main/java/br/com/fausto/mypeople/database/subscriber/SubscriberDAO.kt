@@ -15,6 +15,9 @@ interface SubscriberDAO {
     @Delete
     suspend fun deleteSubscriber(subscriber: Subscriber)
 
+    @Query("SELECT * FROM subscriber_data_table where subscriber_id = :id")
+    suspend fun searchById(id: Int): Subscriber
+
     @Query("DELETE FROM subscriber_data_table")
     suspend fun deleteAllSubscribers()
 

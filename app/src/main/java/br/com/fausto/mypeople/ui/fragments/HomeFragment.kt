@@ -86,19 +86,13 @@ class HomeFragment : Fragment() {
     }
 
     private fun listItemClicked(subscriber: Subscriber) {
+//        subscriberViewModel.setupUpdate(subscriber)
 
         val dialog = Dialog(requireContext())
         dialog.setContentView(R.layout.contact_dialog)
         val closeLayout: LinearLayout = dialog.findViewById(R.id.cancel_layout)
         val excludeLayout: LinearLayout = dialog.findViewById(R.id.exclude_layout)
         val editLayout: LinearLayout = dialog.findViewById(R.id.edit_layout)
-
-//        val editTextView: TextView = dialog.findViewById(R.id.edit_text)
-//        editTextView.text = subscriber.email
-//        var editText = editTextView.text
-//        editText = subscriber.email
-//        Log.e("SUBSCRIBER", subscriber.email)
-//        Log.e("SUBSCRIBER", editText)
 
         dialog.show()
         closeLayout.setOnClickListener {
@@ -110,7 +104,13 @@ class HomeFragment : Fragment() {
             dialog.dismiss()
         }
         editLayout.setOnClickListener {
-
+            val registerFragment = RegisterFragment()
+            val bundle = Bundle()
+            bundle.putSerializable("SUBSCRIBER_UPDATE", subscriber)
+            registerFragment.arguments = bundle
+            parentFragmentManager.beginTransaction().replace(R.id.fragmentHost, registerFragment)
+                .commit()
+            dialog.dismiss()
         }
     }
 }

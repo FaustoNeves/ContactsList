@@ -42,7 +42,7 @@ class MyViewHolder(private val binding: SubscriberListItemBinding) : RecyclerVie
     fun bind(subscriber: Subscriber, clickListener: (Subscriber) -> Unit) {
         binding.nameTextView.text = subscriber.name
         binding.emailTextView.text = subscriber.email
-        binding.nameTextView.text = subscriber.email
+        binding.numberTextView.text = subscriber.phoneNumber
         binding.listItemLayout.setOnClickListener {
             clickListener(subscriber)
         }
