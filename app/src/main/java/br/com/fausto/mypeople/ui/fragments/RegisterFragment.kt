@@ -82,7 +82,7 @@ class RegisterFragment : Fragment() {
                 repository.insert(subscriber)
             }
         }
-        Toast.makeText(requireContext(), "Operation success", Toast.LENGTH_SHORT).show()
+        Toast.makeText(requireContext(), "Done!", Toast.LENGTH_SHORT).show()
         clearFields()
     }
 

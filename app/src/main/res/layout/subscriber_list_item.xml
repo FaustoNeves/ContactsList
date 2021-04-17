@@ -1,25 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    >
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="20dp"
+    android:orientation="vertical">
 
-    <data>
-
-
-    </data>
-
-    <LinearLayout
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:orientation="vertical">
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/card_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
+        android:layout_gravity="center"
             android:clickable="true"
             android:elevation="10dp"
             android:focusable="true"
@@ -57,12 +49,11 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="5sp"
                     android:layout_below="@id/email_text_view"
-                    android:layout_toRightOf="@id/name_text_view"
+                    android:layout_toEndOf="@id/name_text_view"
                     android:textColor="@color/black"
                     tools:text="(11) 123456789" />
             </RelativeLayout>
 
-        </androidx.cardview.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
-    </LinearLayout>
-</layout>
+</LinearLayout>

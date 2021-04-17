@@ -79,7 +79,7 @@ class HomeFragment : Fragment() {
     private fun initRecyclerView() {
         val recyclerView = view?.findViewById<RecyclerView>(R.id.subscriber_recycler_view)
         recyclerView!!.layoutManager = LinearLayoutManager(context)
-        subscriperAdapter = SubscriberAdapter { listItemClicked(it) }
+        subscriperAdapter = SubscriberAdapter(requireContext()) { listItemClicked(it) }
         recyclerView.adapter = subscriperAdapter
         displaySubscribersList()
     }
