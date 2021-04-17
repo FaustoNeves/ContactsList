@@ -1,12 +1,13 @@
 package br.com.fausto.mypeople
 
-import androidx.test.platform.app.InstrumentationRegistry
+import androidx.room.Room
 import androidx.test.ext.junit.runners.AndroidJUnit4
-
+import androidx.test.platform.app.InstrumentationRegistry
+import br.com.fausto.mypeople.database.subscriber.SubscriberDatabase
+import org.junit.Assert.assertEquals
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-
-import org.junit.Assert.*
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -20,5 +21,15 @@ class ExampleInstrumentedTest {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
         assertEquals("br.com.fausto.mypeople", appContext.packageName)
+    }
+
+    private lateinit var subscriberDB: SubscriberDatabase
+
+    @Before
+    fun openDB() {
+        subscriberDB = Room.inMemoryDatabaseBuilder(
+            InstrumentationRegistry.getInstrumentation().context,
+            SubscriberDatabase::class.java
+        ).build()
     }
 }
