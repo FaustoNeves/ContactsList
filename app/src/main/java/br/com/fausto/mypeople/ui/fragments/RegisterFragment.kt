@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 
 
 class RegisterFragment : Fragment() {
-
+    //Testing github workflow
     private lateinit var inputName: TextInputEditText
     private lateinit var inputEmail: TextInputEditText
     private lateinit var inputCel: TextInputEditText
