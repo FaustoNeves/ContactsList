@@ -45,10 +45,10 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val subscriberDAO =
-            SubscriberDatabase.getInstance(activity?.applicationContext!!).subscriberDAO
-        val repository = SubscriberRepository(subscriberDAO)
-        val factory = SubscriberVMFactory(repository)
+//        val subscriberDAO =
+//            SubscriberDatabase.getInstance(activity?.applicationContext!!).subscriberDAO
+//        val repository = SubscriberRepository(subscriberDAO)
+//        val factory = SubscriberVMFactory(repository)
 //        subscriberViewModel =
 //            ViewModelProvider(this@HomeFragment, factory).get(SubscriberVM::class.java)
 

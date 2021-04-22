@@ -32,6 +32,16 @@ class SubscriberVM @Inject constructor(private val repository: SubscriberReposit
             statusMessage.value = Event("Successfully deleted")
         }
 
+    fun add(subscriber: Subscriber): Job =
+        viewModelScope.launch {
+            repository.insert(subscriber)
+        }
+
+    fun update(subscriber: Subscriber): Job =
+        viewModelScope.launch {
+            repository.update(subscriber)
+        }
+
     override fun addOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {
 
     }

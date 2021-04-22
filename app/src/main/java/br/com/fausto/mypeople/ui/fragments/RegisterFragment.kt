@@ -7,10 +7,12 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import br.com.fausto.mypeople.R
 import br.com.fausto.mypeople.database.Subscriber
 import br.com.fausto.mypeople.database.SubscriberDatabase
 import br.com.fausto.mypeople.repository.SubscriberRepository
+import br.com.fausto.mypeople.ui.viewmodel.SubscriberVM
 import com.google.android.material.textfield.TextInputEditText
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.GlobalScope
@@ -19,10 +21,11 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class RegisterFragment : Fragment() {
     //Testing github workflow
+    private val subscriberViewModel: SubscriberVM by viewModels()
+
     private lateinit var inputName: TextInputEditText
     private lateinit var inputEmail: TextInputEditText
     private lateinit var inputCel: TextInputEditText
-    lateinit var repository: SubscriberRepository
     var subscriberToUpdate: Subscriber? = null
 
     override fun onCreateView(
@@ -33,9 +36,6 @@ class RegisterFragment : Fragment() {
         if (bundle != null) {
             subscriberToUpdate = bundle.getSerializable("SUBSCRIBER_UPDATE") as Subscriber?
         }
-        val subscriberDAO =
-            SubscriberDatabase.getInstance(activity?.applicationContext!!).subscriberDAO
-        repository = SubscriberRepository(subscriberDAO)
         return inflater.inflate(R.layout.fragment_register, container, false)
     }
 
@@ -78,9 +78,9 @@ class RegisterFragment : Fragment() {
                 subscriberToUpdate!!.name = inputName.text.toString()
                 subscriberToUpdate!!.email = inputEmail.text.toString()
                 subscriberToUpdate!!.phoneNumber = inputCel.text.toString()
-                repository.update(subscriberToUpdate!!)
+                subscriberViewModel.update(subscriberToUpdate!!)
             } else {
-                repository.insert(subscriber)
+                subscriberViewModel.add(subscriber)
             }
         }
         Toast.makeText(requireContext(), "Done!", Toast.LENGTH_SHORT).show()
