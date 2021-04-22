@@ -8,20 +8,21 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import br.com.fausto.mypeople.R
-import br.com.fausto.mypeople.database.subscriber.Subscriber
-import br.com.fausto.mypeople.database.subscriber.SubscriberDatabase
-import br.com.fausto.mypeople.repository.subscriber.RSubscriber
+import br.com.fausto.mypeople.database.Subscriber
+import br.com.fausto.mypeople.database.SubscriberDatabase
+import br.com.fausto.mypeople.repository.SubscriberRepository
 import com.google.android.material.textfield.TextInputEditText
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-
+@AndroidEntryPoint
 class RegisterFragment : Fragment() {
     //Testing github workflow
     private lateinit var inputName: TextInputEditText
     private lateinit var inputEmail: TextInputEditText
     private lateinit var inputCel: TextInputEditText
-    lateinit var repository: RSubscriber
+    lateinit var repository: SubscriberRepository
     var subscriberToUpdate: Subscriber? = null
 
     override fun onCreateView(
@@ -34,7 +35,7 @@ class RegisterFragment : Fragment() {
         }
         val subscriberDAO =
             SubscriberDatabase.getInstance(activity?.applicationContext!!).subscriberDAO
-        repository = RSubscriber(subscriberDAO)
+        repository = SubscriberRepository(subscriberDAO)
         return inflater.inflate(R.layout.fragment_register, container, false)
     }
 

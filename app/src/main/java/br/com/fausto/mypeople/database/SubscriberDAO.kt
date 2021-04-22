@@ -1,11 +1,10 @@
-package br.com.fausto.mypeople.database.subscriber
+package br.com.fausto.mypeople.database
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
 
 @Dao
 interface SubscriberDAO {
-
     @Insert
     suspend fun insertSubscriber(subscriber: Subscriber)
 

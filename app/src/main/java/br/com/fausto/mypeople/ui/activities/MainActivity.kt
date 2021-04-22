@@ -6,9 +6,10 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import br.com.fausto.mypeople.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import dagger.hilt.android.AndroidEntryPoint
 
 //https://developer.android.com/jetpack/guide?hl=en-us
-
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,9 +20,5 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.fragmentHost)
         bottomNavBar.setupWithNavController(navController)
 
-    }
-
-    override fun onBackPressed() {
-        super.onBackPressed()
     }
 }

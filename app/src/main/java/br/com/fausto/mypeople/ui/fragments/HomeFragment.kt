@@ -14,22 +14,24 @@ import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import br.com.fausto.mypeople.R
-import br.com.fausto.mypeople.database.subscriber.Subscriber
-import br.com.fausto.mypeople.database.subscriber.SubscriberDatabase
-import br.com.fausto.mypeople.repository.subscriber.RSubscriber
+import br.com.fausto.mypeople.database.Subscriber
+import br.com.fausto.mypeople.database.SubscriberDatabase
+import br.com.fausto.mypeople.repository.SubscriberRepository
 import br.com.fausto.mypeople.ui.adapters.SubscriberAdapter
 import br.com.fausto.mypeople.ui.viewmodel.SubscriberVM
 import br.com.fausto.mypeople.ui.viewmodel.SubscriberVMFactory
 import com.google.android.material.textfield.TextInputEditText
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class HomeFragment : Fragment() {
 
-    private lateinit var subscriberViewModel: SubscriberVM
+    private val subscriberViewModel: SubscriberVM by viewModels()
     private lateinit var subscriperAdapter: SubscriberAdapter
     private lateinit var findField: TextInputEditText
 
@@ -45,10 +47,10 @@ class HomeFragment : Fragment() {
 
         val subscriberDAO =
             SubscriberDatabase.getInstance(activity?.applicationContext!!).subscriberDAO
-        val repository = RSubscriber(subscriberDAO)
+        val repository = SubscriberRepository(subscriberDAO)
         val factory = SubscriberVMFactory(repository)
-        subscriberViewModel =
-            ViewModelProvider(this@HomeFragment, factory).get(SubscriberVM::class.java)
+//        subscriberViewModel =
+//            ViewModelProvider(this@HomeFragment, factory).get(SubscriberVM::class.java)
 
         initRecyclerView()
         findField = requireView().findViewById(R.id.textInputSearchEdit)

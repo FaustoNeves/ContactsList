@@ -1,9 +1,10 @@
-package br.com.fausto.mypeople.repository.subscriber
+package br.com.fausto.mypeople.repository
 
-import br.com.fausto.mypeople.database.subscriber.Subscriber
-import br.com.fausto.mypeople.database.subscriber.SubscriberDAO
+import br.com.fausto.mypeople.database.Subscriber
+import br.com.fausto.mypeople.database.SubscriberDAO
+import javax.inject.Inject
 
-class RSubscriber(private val dao: SubscriberDAO) {
+class SubscriberRepository @Inject constructor(private val dao: SubscriberDAO) {
 
     val subscribers = dao.getAllSubscribers()
 
@@ -16,5 +17,4 @@ class RSubscriber(private val dao: SubscriberDAO) {
     suspend fun delete(subscriber: Subscriber) = dao.deleteSubscriber(subscriber)
 
     suspend fun deleteAll() = dao.deleteAllSubscribers()
-
 }

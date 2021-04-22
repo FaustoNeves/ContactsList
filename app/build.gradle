@@ -4,6 +4,8 @@ plugins {
     id 'kotlin-kapt'
 }
 
+apply plugin: 'dagger.hilt.android.plugin'
+
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.1"
@@ -19,7 +21,7 @@ android {
 
         javaCompileOptions {
             annotationProcessorOptions {
-                arguments = ["room.incremental": "true"]
+                arguments += ["room.incremental": "true"]
             }
         }
     }
@@ -90,4 +92,8 @@ dependencies {
     //Navigation
     implementation 'androidx.navigation:navigation-fragment-ktx:2.3.5'
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.5'
+
+    //DI Hilt+Dagger
+    implementation "com.google.dagger:hilt-android:2.31.2-alpha"
+    kapt "com.google.dagger:hilt-android-compiler:2.31.2-alpha"
 }

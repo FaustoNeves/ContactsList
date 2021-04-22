@@ -5,13 +5,17 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.fausto.mypeople.database.subscriber.Subscriber
-import br.com.fausto.mypeople.repository.subscriber.RSubscriber
+import br.com.fausto.mypeople.database.Subscriber
+import br.com.fausto.mypeople.repository.SubscriberRepository
 import br.com.fausto.mypeople.ui.utils.Event
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class SubscriberVM(private val repository: RSubscriber) : ViewModel(), Observable {
+@HiltViewModel
+class SubscriberVM @Inject constructor(private val repository: SubscriberRepository) : ViewModel(),
+    Observable {
 
     val subscribers = repository.subscribers
     private var isUpdateOrDelete = false

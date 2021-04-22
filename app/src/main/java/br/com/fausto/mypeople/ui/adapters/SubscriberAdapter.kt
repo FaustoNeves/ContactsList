@@ -8,7 +8,7 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import br.com.fausto.mypeople.R
-import br.com.fausto.mypeople.database.subscriber.Subscriber
+import br.com.fausto.mypeople.database.Subscriber
 
 class SubscriberAdapter(
     private val context: Context,

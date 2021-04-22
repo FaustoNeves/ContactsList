@@ -1,4 +1,4 @@
-package br.com.fausto.mypeople.database.subscriber
+package br.com.fausto.mypeople.database
 
 import android.content.Context
 import androidx.room.Database
