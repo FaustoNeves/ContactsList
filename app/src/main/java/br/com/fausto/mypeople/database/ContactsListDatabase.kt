@@ -6,22 +6,22 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 
 @Database(entities = [Subscriber::class], version = 4, exportSchema = false)
-abstract class SubscriberDatabase : RoomDatabase() {
+abstract class ContactsListDatabase : RoomDatabase() {
 
     abstract val subscriberDAO: SubscriberDAO
 
     companion object {
         @Volatile
-        private var INSTANCE: SubscriberDatabase? = null
-        fun getInstance(context: Context): SubscriberDatabase {
+        private var INSTANCE: ContactsListDatabase? = null
+        fun getInstance(context: Context): ContactsListDatabase {
             //synchronized means that will have only 1 instance at time
             //others threads can't instante this but the current thread
             synchronized(this) {
-                var instance: SubscriberDatabase? = INSTANCE
+                var instance: ContactsListDatabase? = INSTANCE
                 if (instance == null) {
                     instance = Room.databaseBuilder(
                         context.applicationContext,
-                        SubscriberDatabase::class.java,
+                        ContactsListDatabase::class.java,
                         "subscriber_data_base"
                     )
                         .fallbackToDestructiveMigration()

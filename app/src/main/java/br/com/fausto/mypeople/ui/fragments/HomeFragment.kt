@@ -15,23 +15,19 @@ import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import br.com.fausto.mypeople.R
 import br.com.fausto.mypeople.database.Subscriber
-import br.com.fausto.mypeople.database.SubscriberDatabase
-import br.com.fausto.mypeople.repository.SubscriberRepository
 import br.com.fausto.mypeople.ui.adapters.SubscriberAdapter
-import br.com.fausto.mypeople.ui.viewmodel.SubscriberVM
-import br.com.fausto.mypeople.ui.viewmodel.SubscriberVMFactory
+import br.com.fausto.mypeople.ui.viewmodel.HomeVM
 import com.google.android.material.textfield.TextInputEditText
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
 
-    private val subscriberViewModel: SubscriberVM by viewModels()
+    private val homeViewModel: HomeVM by viewModels()
     private lateinit var subscriperAdapter: SubscriberAdapter
     private lateinit var findField: TextInputEditText
 
@@ -55,8 +51,8 @@ class HomeFragment : Fragment() {
         initRecyclerView()
         findField = requireView().findViewById(R.id.textInputSearchEdit)
         findField.addTextChangedListener {
-            subscriberViewModel.subscribers.observe(viewLifecycleOwner, { list ->
-                var tempList = mutableListOf<Subscriber>()
+            homeViewModel.subscribers.observe(viewLifecycleOwner, { list ->
+                val tempList = mutableListOf<Subscriber>()
                 for (subscriber in list) {
                     if (subscriber.name.contains(it.toString())) {
                         tempList.add(subscriber)
@@ -71,10 +67,8 @@ class HomeFragment : Fragment() {
             })
         }
 
-        subscriberViewModel.message.observe(viewLifecycleOwner, { it ->
-            it.getContentIfNotHandled()?.let { message ->
-                Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-            }
+        homeViewModel.message.observe(viewLifecycleOwner, {
+            Toast.makeText(context, it.toString(), Toast.LENGTH_SHORT).show()
         })
     }
 
@@ -87,7 +81,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun displaySubscribersList() {
-        subscriberViewModel.subscribers.observe(viewLifecycleOwner, {
+        homeViewModel.subscribers.observe(viewLifecycleOwner, {
             subscriperAdapter.setList(it)
             subscriperAdapter.notifyDataSetChanged()
         })
@@ -127,7 +121,7 @@ class HomeFragment : Fragment() {
         }
 
         excludeLayout.setOnClickListener {
-            subscriberViewModel.delete(subscriber)
+            homeViewModel.delete(subscriber)
             subscriperAdapter.notifyDataSetChanged()
             dialog.dismiss()
         }
@@ -139,6 +133,7 @@ class HomeFragment : Fragment() {
             parentFragmentManager.beginTransaction().replace(R.id.fragmentHost, registerFragment)
                 .commit()
             dialog.dismiss()
+            homeViewModel.testeString.value = "OLÁÁ ALOWW ALGUÉM AÍ"
         }
     }
 

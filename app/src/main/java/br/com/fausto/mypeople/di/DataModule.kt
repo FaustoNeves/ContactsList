@@ -1,9 +1,8 @@
 package br.com.fausto.mypeople.di
 
 import android.content.Context
-import androidx.room.Room
 import br.com.fausto.mypeople.database.SubscriberDAO
-import br.com.fausto.mypeople.database.SubscriberDatabase
+import br.com.fausto.mypeople.database.ContactsListDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,8 +15,8 @@ import javax.inject.Singleton
 class DataModule {
     @Singleton
     @Provides
-    fun provideSubscriberDAO(subscriberDatabase: SubscriberDatabase): SubscriberDAO {
-        return subscriberDatabase.subscriberDAO
+    fun provideSubscriberDAO(contactsListDatabase: ContactsListDatabase): SubscriberDAO {
+        return contactsListDatabase.subscriberDAO
     }
 
     @Module
@@ -25,12 +24,13 @@ class DataModule {
     object AppDatabase {
         @Provides
         @Singleton
-        fun provideAppDatabase(@ApplicationContext appContext: Context): SubscriberDatabase {
-            return Room.databaseBuilder(
-                appContext,
-                SubscriberDatabase::class.java,
-                "subscriber_database"
-            ).build()
+        fun provideAppDatabase(@ApplicationContext appContext: Context): ContactsListDatabase {
+            return ContactsListDatabase.getInstance(appContext)
+//            return Room.databaseBuilder(
+//                appContext,
+//                SubscriberDatabase::class.java,
+//                "subscriber_database"
+//            ).build()
         }
     }
 }

@@ -21,7 +21,7 @@ class SubscriberDatabase {
     @Before
     fun openDB() {
         subscriberDB =
-            SubscriberDatabase.getInstance(InstrumentationRegistry.getInstrumentation().targetContext).subscriberDAO
+            ContactsListDatabase.getInstance(InstrumentationRegistry.getInstrumentation().targetContext).subscriberDAO
         repository = SubscriberRepository(subscriberDB)
         runBlocking {
             repository.deleteAll()

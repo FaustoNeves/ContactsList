@@ -10,9 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import br.com.fausto.mypeople.R
 import br.com.fausto.mypeople.database.Subscriber
-import br.com.fausto.mypeople.database.SubscriberDatabase
-import br.com.fausto.mypeople.repository.SubscriberRepository
-import br.com.fausto.mypeople.ui.viewmodel.SubscriberVM
+import br.com.fausto.mypeople.ui.viewmodel.RegisterVM
 import com.google.android.material.textfield.TextInputEditText
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.GlobalScope
@@ -20,8 +18,7 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class RegisterFragment : Fragment() {
-    //Testing github workflow
-    private val subscriberViewModel: SubscriberVM by viewModels()
+    private val registerViewModel: RegisterVM by viewModels()
 
     private lateinit var inputName: TextInputEditText
     private lateinit var inputEmail: TextInputEditText
@@ -61,7 +58,9 @@ class RegisterFragment : Fragment() {
         }
 
         clearButton.setOnClickListener { clearFields() }
-
+        registerViewModel.message.observe(viewLifecycleOwner, { it ->
+            Toast.makeText(context, it.toString(), Toast.LENGTH_SHORT).show()
+        })
     }
 
     private fun setupUpdateState() {
@@ -78,12 +77,12 @@ class RegisterFragment : Fragment() {
                 subscriberToUpdate!!.name = inputName.text.toString()
                 subscriberToUpdate!!.email = inputEmail.text.toString()
                 subscriberToUpdate!!.phoneNumber = inputCel.text.toString()
-                subscriberViewModel.update(subscriberToUpdate!!)
+                registerViewModel.update(subscriberToUpdate!!)
             } else {
-                subscriberViewModel.add(subscriber)
+                registerViewModel.add(subscriber)
             }
         }
-        Toast.makeText(requireContext(), "Done!", Toast.LENGTH_SHORT).show()
+//        Toast.makeText(requireContext(), "Done!", Toast.LENGTH_SHORT).show()
         clearFields()
     }
 
