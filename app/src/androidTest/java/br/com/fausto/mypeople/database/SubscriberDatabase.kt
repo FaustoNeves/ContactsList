@@ -1,31 +1,46 @@
 package br.com.fausto.mypeople.database
 
-import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.platform.app.InstrumentationRegistry
 import br.com.fausto.mypeople.repository.SubscriberRepository
+import dagger.hilt.android.testing.HiltAndroidRule
+import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.CoreMatchers.equalTo
+import org.junit.After
 import org.junit.Assert.*
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
+import javax.inject.Inject
+import javax.inject.Named
 
 @ExperimentalCoroutinesApi
-@RunWith(AndroidJUnit4::class)
+@HiltAndroidTest
 class SubscriberDatabase {
+
+    @get:Rule
+    var hiltRule = HiltAndroidRule(this)
+
+    @Inject
+    @Named("test_db")
+    lateinit var contactsListDatabase: ContactsListDatabase
 
     private lateinit var subscriberDB: SubscriberDAO
     lateinit var repository: SubscriberRepository
 
     @Before
     fun openDB() {
-        subscriberDB =
-            ContactsListDatabase.getInstance(InstrumentationRegistry.getInstrumentation().targetContext).subscriberDAO
+        hiltRule.inject()
+        subscriberDB = contactsListDatabase.subscriberDAO
         repository = SubscriberRepository(subscriberDB)
         runBlocking {
             repository.deleteAll()
         }
+    }
+
+    @After
+    fun closeDB() {
+        contactsListDatabase.close()
     }
 
     @Test
