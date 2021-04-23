@@ -16,7 +16,6 @@ class HomeVM @Inject constructor(private val repository: SubscriberRepository) :
 
     val subscribers = repository.subscribers
     private var isUpdateOrDelete = false
-    var testeString = MutableLiveData<String>()
 
     private val statusMessage = MutableLiveData<String>()
     val message: LiveData<String>
@@ -27,15 +26,5 @@ class HomeVM @Inject constructor(private val repository: SubscriberRepository) :
             repository.delete(subscriber)
             isUpdateOrDelete = false
             statusMessage.value = "Successfully deleted"
-        }
-
-    fun add(subscriber: Subscriber): Job =
-        viewModelScope.launch {
-            repository.insert(subscriber)
-        }
-
-    fun update(subscriber: Subscriber): Job =
-        viewModelScope.launch {
-            repository.update(subscriber)
         }
 }

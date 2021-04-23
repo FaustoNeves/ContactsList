@@ -14,7 +14,6 @@ import javax.inject.Inject
 @HiltViewModel
 class RegisterVM @Inject constructor(private val repository: SubscriberRepository) : ViewModel() {
 
-    val subscribers = repository.subscribers
     private val statusMessage = MutableLiveData<String>()
     val message: LiveData<String>
         get() = statusMessage

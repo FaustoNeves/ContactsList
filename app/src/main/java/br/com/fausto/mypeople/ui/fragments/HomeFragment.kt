@@ -41,13 +41,6 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        val subscriberDAO =
-//            SubscriberDatabase.getInstance(activity?.applicationContext!!).subscriberDAO
-//        val repository = SubscriberRepository(subscriberDAO)
-//        val factory = SubscriberVMFactory(repository)
-//        subscriberViewModel =
-//            ViewModelProvider(this@HomeFragment, factory).get(SubscriberVM::class.java)
-
         initRecyclerView()
         findField = requireView().findViewById(R.id.textInputSearchEdit)
         findField.addTextChangedListener {
@@ -88,7 +81,6 @@ class HomeFragment : Fragment() {
     }
 
     private fun listItemClicked(subscriber: Subscriber) {
-//        subscriberViewModel.setupUpdate(subscriber)
 
         val dialog = Dialog(requireContext())
         dialog.setContentView(R.layout.contact_dialog)
@@ -133,7 +125,6 @@ class HomeFragment : Fragment() {
             parentFragmentManager.beginTransaction().replace(R.id.fragmentHost, registerFragment)
                 .commit()
             dialog.dismiss()
-            homeViewModel.testeString.value = "OLÁÁ ALOWW ALGUÉM AÍ"
         }
     }
 
