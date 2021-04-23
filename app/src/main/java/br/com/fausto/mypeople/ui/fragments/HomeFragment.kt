@@ -14,22 +14,20 @@ import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import br.com.fausto.mypeople.R
-import br.com.fausto.mypeople.database.subscriber.Subscriber
-import br.com.fausto.mypeople.database.subscriber.SubscriberDatabase
-import br.com.fausto.mypeople.repository.subscriber.RSubscriber
+import br.com.fausto.mypeople.database.Subscriber
 import br.com.fausto.mypeople.ui.adapters.SubscriberAdapter
-import br.com.fausto.mypeople.ui.viewmodel.SubscriberVM
-import br.com.fausto.mypeople.ui.viewmodel.SubscriberVMFactory
+import br.com.fausto.mypeople.ui.viewmodel.HomeVM
 import com.google.android.material.textfield.TextInputEditText
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class HomeFragment : Fragment() {
 
-    private lateinit var subscriberViewModel: SubscriberVM
+    private val homeViewModel: HomeVM by viewModels()
     private lateinit var subscriperAdapter: SubscriberAdapter
     private lateinit var findField: TextInputEditText
 
@@ -43,18 +41,11 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val subscriberDAO =
-            SubscriberDatabase.getInstance(activity?.applicationContext!!).subscriberDAO
-        val repository = RSubscriber(subscriberDAO)
-        val factory = SubscriberVMFactory(repository)
-        subscriberViewModel =
-            ViewModelProvider(this@HomeFragment, factory).get(SubscriberVM::class.java)
-
         initRecyclerView()
         findField = requireView().findViewById(R.id.textInputSearchEdit)
         findField.addTextChangedListener {
-            subscriberViewModel.subscribers.observe(viewLifecycleOwner, { list ->
-                var tempList = mutableListOf<Subscriber>()
+            homeViewModel.subscribers.observe(viewLifecycleOwner, { list ->
+                val tempList = mutableListOf<Subscriber>()
                 for (subscriber in list) {
                     if (subscriber.name.contains(it.toString())) {
                         tempList.add(subscriber)
@@ -69,10 +60,8 @@ class HomeFragment : Fragment() {
             })
         }
 
-        subscriberViewModel.message.observe(viewLifecycleOwner, { it ->
-            it.getContentIfNotHandled()?.let { message ->
-                Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-            }
+        homeViewModel.message.observe(viewLifecycleOwner, {
+            Toast.makeText(context, it.toString(), Toast.LENGTH_SHORT).show()
         })
     }
 
@@ -85,14 +74,13 @@ class HomeFragment : Fragment() {
     }
 
     private fun displaySubscribersList() {
-        subscriberViewModel.subscribers.observe(viewLifecycleOwner, {
+        homeViewModel.subscribers.observe(viewLifecycleOwner, {
             subscriperAdapter.setList(it)
             subscriperAdapter.notifyDataSetChanged()
         })
     }
 
     private fun listItemClicked(subscriber: Subscriber) {
-//        subscriberViewModel.setupUpdate(subscriber)
 
         val dialog = Dialog(requireContext())
         dialog.setContentView(R.layout.contact_dialog)
@@ -125,7 +113,7 @@ class HomeFragment : Fragment() {
         }
 
         excludeLayout.setOnClickListener {
-            subscriberViewModel.delete(subscriber)
+            homeViewModel.delete(subscriber)
             subscriperAdapter.notifyDataSetChanged()
             dialog.dismiss()
         }

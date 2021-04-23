@@ -2,10 +2,7 @@ package br.com.fausto.mypeople.database
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
-import br.com.fausto.mypeople.database.subscriber.Subscriber
-import br.com.fausto.mypeople.database.subscriber.SubscriberDAO
-import br.com.fausto.mypeople.database.subscriber.SubscriberDatabase
-import br.com.fausto.mypeople.repository.subscriber.RSubscriber
+import br.com.fausto.mypeople.repository.SubscriberRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.CoreMatchers.equalTo
@@ -19,13 +16,13 @@ import org.junit.runner.RunWith
 class SubscriberDatabase {
 
     private lateinit var subscriberDB: SubscriberDAO
-    lateinit var repository: RSubscriber
+    lateinit var repository: SubscriberRepository
 
     @Before
     fun openDB() {
         subscriberDB =
-            SubscriberDatabase.getInstance(InstrumentationRegistry.getInstrumentation().targetContext).subscriberDAO
-        repository = RSubscriber(subscriberDB)
+            ContactsListDatabase.getInstance(InstrumentationRegistry.getInstrumentation().targetContext).subscriberDAO
+        repository = SubscriberRepository(subscriberDB)
         runBlocking {
             repository.deleteAll()
         }
