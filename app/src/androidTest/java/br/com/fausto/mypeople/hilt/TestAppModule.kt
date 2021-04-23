@@ -15,7 +15,7 @@ import javax.inject.Named
 object TestAppModule {
 
     @Provides
-    @Named("test_db")
+    @Named("test_subscriber_data_base")
     fun provideInMemoryDb(@ApplicationContext appContext: Context) =
         Room.inMemoryDatabaseBuilder(appContext, ContactsListDatabase::class.java)
             .allowMainThreadQueries().build()

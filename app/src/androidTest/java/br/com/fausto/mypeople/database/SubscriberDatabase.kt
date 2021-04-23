@@ -22,7 +22,7 @@ class SubscriberDatabase {
     var hiltRule = HiltAndroidRule(this)
 
     @Inject
-    @Named("test_db")
+    @Named("test_subscriber_data_base")
     lateinit var contactsListDatabase: ContactsListDatabase
 
     private lateinit var subscriberDB: SubscriberDAO
@@ -34,7 +34,8 @@ class SubscriberDatabase {
         subscriberDB = contactsListDatabase.subscriberDAO
         repository = SubscriberRepository(subscriberDB)
         runBlocking {
-            repository.deleteAll()
+//            repository.deleteAll()
+            subscriberDB.deleteAllSubscribers()
         }
     }
 
@@ -46,7 +47,8 @@ class SubscriberDatabase {
     @Test
     fun insertAndSearchById() = runBlocking {
         val subscriber = Subscriber(5, "Ann", "ann@hotmail.com", "123")
-        repository.insert(subscriber)
+//        repository.insert(subscriber)
+        subscriberDB.insertSubscriber(subscriber)
         val newSubscriber = repository.searchById(5)
         assertThat(subscriber.name, equalTo(newSubscriber.name))
     }
@@ -54,9 +56,11 @@ class SubscriberDatabase {
     @Test
     fun insertAndUpdate() = runBlocking {
         val subscriber = Subscriber(3, "Abel", "abel@gmail.com", "456")
-        repository.insert(subscriber)
+//        repository.insert(subscriber)
+        subscriberDB.insertSubscriber(subscriber)
         subscriber.phoneNumber = "789"
-        repository.update(subscriber)
+//        repository.update(subscriber)
+        subscriberDB.updateSubscriber(subscriber)
         val newSubscriber = repository.searchById(3)
         assertThat(subscriber.phoneNumber, equalTo(newSubscriber.phoneNumber))
     }
@@ -64,8 +68,10 @@ class SubscriberDatabase {
     @Test
     fun inserAndDelete() = runBlocking {
         val subscriber = Subscriber(6, "Halo", "halo@outlook.com", "246")
-        repository.insert(subscriber)
-        val allSubscribers = repository.subscribers
+//        repository.insert(subscriber)
+        subscriberDB.insertSubscriber(subscriber)
+//        val allSubscribers = repository.subscribers
+        val allSubscribers = subscriberDB.getAllSubscribers()
         assertNull(allSubscribers.value)
     }
 
@@ -75,36 +81,16 @@ class SubscriberDatabase {
         val subscriber2 = Subscriber(15, "Camila", "camila@hotmail.com", "456")
         val subscriber3 = Subscriber(20, "Mona", "mona@hotmail.com", "172")
         val subscriber4 = Subscriber(25, "Rafael", "rafael@hotmail.com", "987")
-        repository.insert(subscriber)
-        repository.insert(subscriber2)
-        repository.insert(subscriber3)
-        repository.insert(subscriber4)
-        val allSubscribers = repository.subscribers
+//        repository.insert(subscriber)
+//        repository.insert(subscriber2)
+//        repository.insert(subscriber3)
+//        repository.insert(subscriber4)
+        subscriberDB.insertSubscriber(subscriber)
+        subscriberDB.insertSubscriber(subscriber2)
+        subscriberDB.insertSubscriber(subscriber3)
+        subscriberDB.insertSubscriber(subscriber4)
+//        val allSubscribers = repository.subscribers
+        val allSubscribers = subscriberDB.getAllSubscribers()
         assertNotNull(allSubscribers)
     }
-//    @Test
-//    fun insertAndDelete() = runBlocking {
-//
-//    }
-
-//    @Test
-//    fun getBufferoosRetrievesData() {
-//        val cachedBufferoos = BufferooFactory.makeCachedBufferooList(5)
-//
-//        cachedBufferoos.forEach {
-//            bufferoosDatabase.cachedBufferooDao().insertBufferoo(it)
-//        }
-//
-//        val retrievedBufferoos = bufferoosDatabase.cachedBufferooDao().getBufferoos()
-//        assert(retrievedBufferoos == cachedBufferoos.sortedWith(compareBy({ it.id }, { it.id })))
-//    }
-//
-//    @Test
-//    fun clearBufferoosClearsData() {
-//        val cachedBufferoo = BufferooFactory.makeCachedBufferoo()
-//        bufferoosDatabase.cachedBufferooDao().insertBufferoo(cachedBufferoo)
-//
-//        bufferoosDatabase.cachedBufferooDao().clearBufferoos()
-//        assert(bufferoosDatabase.cachedBufferooDao().getBufferoos().isEmpty())
-//    }
 }
