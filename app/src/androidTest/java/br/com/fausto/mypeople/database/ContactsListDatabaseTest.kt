@@ -1,13 +1,16 @@
 package br.com.fausto.mypeople.database
 
-import br.com.fausto.mypeople.repository.SubscriberRepository
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import br.com.fausto.mypeople.getOrAwaitValue
+import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.CoreMatchers.equalTo
 import org.junit.After
-import org.junit.Assert.*
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertThat
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -16,7 +19,10 @@ import javax.inject.Named
 
 @ExperimentalCoroutinesApi
 @HiltAndroidTest
-class SubscriberDatabase {
+class ContactsListDatabaseTest {
+
+    @get:Rule
+    var instantTaskExecutorRule = InstantTaskExecutorRule()
 
     @get:Rule
     var hiltRule = HiltAndroidRule(this)
@@ -25,17 +31,14 @@ class SubscriberDatabase {
     @Named("test_subscriber_data_base")
     lateinit var contactsListDatabase: ContactsListDatabase
 
-    private lateinit var subscriberDB: SubscriberDAO
-    lateinit var repository: SubscriberRepository
+    private lateinit var subscriberDAO: SubscriberDAO
 
     @Before
     fun openDB() {
         hiltRule.inject()
-        subscriberDB = contactsListDatabase.subscriberDAO
-        repository = SubscriberRepository(subscriberDB)
+        subscriberDAO = contactsListDatabase.subscriberDAO
         runBlocking {
-//            repository.deleteAll()
-            subscriberDB.deleteAllSubscribers()
+            subscriberDAO.deleteAllSubscribers()
         }
     }
 
@@ -47,32 +50,29 @@ class SubscriberDatabase {
     @Test
     fun insertAndSearchById() = runBlocking {
         val subscriber = Subscriber(5, "Ann", "ann@hotmail.com", "123")
-//        repository.insert(subscriber)
-        subscriberDB.insertSubscriber(subscriber)
-        val newSubscriber = repository.searchById(5)
+        subscriberDAO.insertSubscriber(subscriber)
+        val newSubscriber = subscriberDAO.searchById(subscriber.id)
         assertThat(subscriber.name, equalTo(newSubscriber.name))
     }
 
     @Test
     fun insertAndUpdate() = runBlocking {
         val subscriber = Subscriber(3, "Abel", "abel@gmail.com", "456")
-//        repository.insert(subscriber)
-        subscriberDB.insertSubscriber(subscriber)
+        subscriberDAO.insertSubscriber(subscriber)
         subscriber.phoneNumber = "789"
-//        repository.update(subscriber)
-        subscriberDB.updateSubscriber(subscriber)
-        val newSubscriber = repository.searchById(3)
+        subscriberDAO.updateSubscriber(subscriber)
+        val newSubscriber = subscriberDAO.searchById(subscriber.id)
         assertThat(subscriber.phoneNumber, equalTo(newSubscriber.phoneNumber))
     }
 
     @Test
-    fun inserAndDelete() = runBlocking {
+    fun insertAndDelete() = runBlocking {
         val subscriber = Subscriber(6, "Halo", "halo@outlook.com", "246")
-//        repository.insert(subscriber)
-        subscriberDB.insertSubscriber(subscriber)
-//        val allSubscribers = repository.subscribers
-        val allSubscribers = subscriberDB.getAllSubscribers()
-        assertNull(allSubscribers.value)
+        subscriberDAO.insertSubscriber(subscriber)
+        subscriberDAO.deleteSubscriber(subscriber)
+        val allSubscribers = subscriberDAO.getAllSubscribers().getOrAwaitValue()
+        assertFalse(allSubscribers.contains(subscriber))
+        assertThat(allSubscribers).doesNotContain(subscriber)
     }
 
     @Test
@@ -81,16 +81,12 @@ class SubscriberDatabase {
         val subscriber2 = Subscriber(15, "Camila", "camila@hotmail.com", "456")
         val subscriber3 = Subscriber(20, "Mona", "mona@hotmail.com", "172")
         val subscriber4 = Subscriber(25, "Rafael", "rafael@hotmail.com", "987")
-//        repository.insert(subscriber)
-//        repository.insert(subscriber2)
-//        repository.insert(subscriber3)
-//        repository.insert(subscriber4)
-        subscriberDB.insertSubscriber(subscriber)
-        subscriberDB.insertSubscriber(subscriber2)
-        subscriberDB.insertSubscriber(subscriber3)
-        subscriberDB.insertSubscriber(subscriber4)
-//        val allSubscribers = repository.subscribers
-        val allSubscribers = subscriberDB.getAllSubscribers()
-        assertNotNull(allSubscribers)
+        subscriberDAO.insertSubscriber(subscriber)
+        subscriberDAO.insertSubscriber(subscriber2)
+        subscriberDAO.insertSubscriber(subscriber3)
+        subscriberDAO.insertSubscriber(subscriber4)
+        val allSubscribers = subscriberDAO.getAllSubscribers().getOrAwaitValue()
+        val subscribersConfirmList = listOf(subscriber, subscriber2, subscriber3, subscriber4)
+        assert(allSubscribers.containsAll(subscribersConfirmList))
     }
 }
