@@ -3,6 +3,9 @@ package br.com.fausto.mypeople.di
 import android.content.Context
 import br.com.fausto.mypeople.database.ContactsListDatabase
 import br.com.fausto.mypeople.database.SubscriberDAO
+import br.com.fausto.mypeople.repository.ISubscriberRepository
+import br.com.fausto.mypeople.repository.SubscriberRepository
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,4 +25,13 @@ object DataModule {
     @Singleton
     fun provideAppDatabase(@ApplicationContext appContext: Context): ContactsListDatabase =
         ContactsListDatabase.getInstance(appContext)
+
+}
+
+@Module
+@InstallIn(SingletonComponent::class)
+abstract class DataModuleBinding {
+    @Singleton
+    @Binds
+    abstract fun bindsSubscriberRepository(subscriberRepository: SubscriberRepository): ISubscriberRepository
 }
