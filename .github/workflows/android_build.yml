@@ -1,35 +1,22 @@
-name: Android CI
+name: Android Build
 
-on:
-  pull_request:
-    branches: [ main ]
-    push:
-      branches: [development]
+on: pull_request
 
 jobs:
   build:
+
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v2
-      - name: set up JDK 1.8
+      - uses: actions/checkout@v1
+
+      - name: Set Up JDK
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
 
-      - name: Build with Gradle
-        run: ./gradlew build
-
-      - name: Run JUnit tests with Gradle
+      - name: Run Unit Tests
         run: ./gradlew test
 
-  androidTest:
-    runs-on: macOS-latest #Have to use mac os for HAXM hw acceleration. although it uses 10x more run minutes than ubuntu on GH actions
-    steps:
-      - uses: actions/checkout@v2
-      - name: Instrumentation Tests
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: 29
-          arch: x86
-          disable-animations: true
-          script: ./gradlew connectedAndroidTest --stacktrace
+      - name: Build Project
+        run: ./gradlew assemble
