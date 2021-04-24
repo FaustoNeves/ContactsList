@@ -1,4 +1,4 @@
-package br.com.fausto.mypeople.hilt
+package br.com.fausto.mypeople.di
 
 import android.app.Application
 import android.content.Context
