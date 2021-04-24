@@ -36,7 +36,7 @@ class ContactsListDatabaseTest {
     @Before
     fun openDB() {
         hiltRule.inject()
-        subscriberDAO = contactsListDatabase.subscriberDAO
+        subscriberDAO = contactsListDatabase.subscriberDAO()
         runBlocking {
             subscriberDAO.deleteAllSubscribers()
         }
