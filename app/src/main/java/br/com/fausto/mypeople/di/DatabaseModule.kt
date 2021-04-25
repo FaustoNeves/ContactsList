@@ -1,11 +1,11 @@
 package br.com.fausto.mypeople.di
 
 import android.content.Context
+import androidx.room.Room
 import br.com.fausto.mypeople.database.ContactsListDatabase
 import br.com.fausto.mypeople.database.SubscriberDAO
 import br.com.fausto.mypeople.repository.ISubscriberRepository
 import br.com.fausto.mypeople.repository.SubscriberRepository
-import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,19 +19,16 @@ object DataModule {
     @Singleton
     @Provides
     fun provideSubscriberDAO(contactsListDatabase: ContactsListDatabase): SubscriberDAO =
-        contactsListDatabase.subscriberDAO
+        contactsListDatabase.subscriberDAO()
 
     @Provides
     @Singleton
     fun provideAppDatabase(@ApplicationContext appContext: Context): ContactsListDatabase =
-        ContactsListDatabase.getInstance(appContext)
+        Room.databaseBuilder(appContext, ContactsListDatabase::class.java, "module_database")
+            .fallbackToDestructiveMigration().build()
 
-}
-
-@Module
-@InstallIn(SingletonComponent::class)
-abstract class DataModuleBinding {
     @Singleton
-    @Binds
-    abstract fun bindsSubscriberRepository(subscriberRepository: SubscriberRepository): ISubscriberRepository
+    @Provides
+    fun bindsSubscriberRepository(subscriberDAO: SubscriberDAO): ISubscriberRepository =
+        SubscriberRepository(subscriberDAO)
 }
