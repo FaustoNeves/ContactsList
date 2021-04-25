@@ -29,6 +29,6 @@ object DataModule {
 
     @Singleton
     @Provides
-    fun bindsSubscriberRepository(subscriberDAO: SubscriberDAO): ISubscriberRepository =
+    fun provideSubscriberRepository(subscriberDAO: SubscriberDAO): ISubscriberRepository =
         SubscriberRepository(subscriberDAO)
 }

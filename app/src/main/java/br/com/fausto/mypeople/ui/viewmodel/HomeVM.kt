@@ -16,18 +16,14 @@ class HomeVM @Inject constructor(
     private val repository: ISubscriberRepository
 ) : ViewModel() {
 
+    val subscribers = repository.getAllSubscribers()
     private val statusMessage = MutableLiveData<String>()
     val message: LiveData<String>
         get() = statusMessage
 
-    val subscribers = repository.getAllSubscribers()
-    private var isUpdateOrDelete = false
-
-
     fun delete(subscriber: Subscriber): Job =
         viewModelScope.launch {
             repository.delete(subscriber)
-            isUpdateOrDelete = false
             statusMessage.value = "Successfully deleted"
         }
 }

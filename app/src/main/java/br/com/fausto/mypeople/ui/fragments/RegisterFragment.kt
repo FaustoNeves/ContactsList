@@ -65,9 +65,9 @@ class RegisterFragment : Fragment() {
     }
 
     private fun setupUpdateState(subscriberToUpdate: Subscriber) {
-        inputName.setText(subscriberToUpdate!!.name)
-        inputEmail.setText(subscriberToUpdate!!.email)
-        inputCel.setText(subscriberToUpdate!!.phoneNumber)
+        inputName.setText(subscriberToUpdate.name)
+        inputEmail.setText(subscriberToUpdate.email)
+        inputCel.setText(subscriberToUpdate.phoneNumber)
     }
 
     private fun saveContact(subscriber: Subscriber) {
