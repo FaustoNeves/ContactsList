@@ -1,10 +1,13 @@
 package br.com.fausto.mypeople.ui.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
@@ -12,6 +15,7 @@ import androidx.fragment.app.viewModels
 import br.com.fausto.mypeople.R
 import br.com.fausto.mypeople.database.Subscriber
 import br.com.fausto.mypeople.ui.viewmodel.RegisterVM
+import br.com.fausto.mypeople.utils.Status
 import com.google.android.material.textfield.TextInputEditText
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.GlobalScope
@@ -59,8 +63,16 @@ class RegisterFragment : Fragment() {
         }
 
         clearButton.setOnClickListener { clearFields() }
+
         registerViewModel.message.observe(viewLifecycleOwner, { it ->
-            Toast.makeText(context, it.toString(), Toast.LENGTH_SHORT).show()
+            it.getContentIfNotHandled()?.let {
+                Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
+                if ((it.status) == Status.SUCCESS) {
+                    clearFields()
+                    requireView().findViewById<LinearLayout>(R.id.mainLinearLayout).requestFocus()
+                    requireView().hideKeyboard()
+                }
+            }
         })
     }
 
@@ -81,7 +93,7 @@ class RegisterFragment : Fragment() {
                 registerViewModel.add(subscriber)
             }
         }
-        clearFields()
+        subscriberToUpdate = null
     }
 
     private fun clearFields() {
@@ -90,8 +102,8 @@ class RegisterFragment : Fragment() {
         inputCel.setText("")
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        subscriberToUpdate = null
+    fun View.hideKeyboard() {
+        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(windowToken, 0)
     }
 }

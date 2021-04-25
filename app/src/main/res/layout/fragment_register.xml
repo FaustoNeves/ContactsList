@@ -8,6 +8,7 @@
     android:background="@color/light_blue"
     android:orientation="vertical"
     tools:context=".ui.fragments.RegisterFragment"
+    android:id="@+id/mainLinearLayout"
     >
 
     <com.google.android.material.textfield.TextInputLayout

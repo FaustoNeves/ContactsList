@@ -44,6 +44,7 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
+
         findField = requireView().findViewById(R.id.textInputSearchEdit)
         findField.addTextChangedListener {
             homeViewModel.subscribers.observe(viewLifecycleOwner, { list ->
@@ -61,8 +62,10 @@ class HomeFragment : Fragment() {
             })
         }
 
-        homeViewModel.message.observe(viewLifecycleOwner, {
-            Toast.makeText(context, it.toString(), Toast.LENGTH_SHORT).show()
+        homeViewModel.message.observe(viewLifecycleOwner, { it ->
+            it.getContentIfNotHandled()?.let {
+                Toast.makeText(context, it.toString(), Toast.LENGTH_SHORT).show()
+            }
         })
     }
 
