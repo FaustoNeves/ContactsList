@@ -29,6 +29,7 @@ class RegisterFragment : Fragment() {
     private lateinit var inputEmail: TextInputEditText
     private lateinit var inputCel: TextInputEditText
     var subscriberToUpdate: Subscriber? = null
+    var isUpdate: Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,6 +50,7 @@ class RegisterFragment : Fragment() {
         setFragmentResultListener("subscriber") { _, bundle ->
             subscriberToUpdate = bundle.getSerializable("SUBSCRIBER_UPDATE") as Subscriber
             setupUpdateState(bundle.getSerializable("SUBSCRIBER_UPDATE") as Subscriber)
+            isUpdate = true
         }
 
         confirmButton.setOnClickListener {
@@ -64,7 +66,7 @@ class RegisterFragment : Fragment() {
 
         clearButton.setOnClickListener { clearFields() }
 
-        registerViewModel.message.observe(viewLifecycleOwner, { it ->
+        registerViewModel.subscriberStatus.observe(viewLifecycleOwner, { it ->
             it.getContentIfNotHandled()?.let {
                 Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
                 if ((it.status) == Status.SUCCESS) {
@@ -84,7 +86,7 @@ class RegisterFragment : Fragment() {
 
     private fun saveContact(subscriber: Subscriber) {
         GlobalScope.launch {
-            if (subscriberToUpdate != null) {
+            if (isUpdate) {
                 subscriberToUpdate!!.name = inputName.text.toString()
                 subscriberToUpdate!!.email = inputEmail.text.toString()
                 subscriberToUpdate!!.phoneNumber = inputCel.text.toString()
@@ -93,7 +95,6 @@ class RegisterFragment : Fragment() {
                 registerViewModel.add(subscriber)
             }
         }
-        subscriberToUpdate = null
     }
 
     private fun clearFields() {

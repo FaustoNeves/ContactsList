@@ -18,37 +18,32 @@ class RegisterVM @Inject constructor(
     private val repository: ISubscriberRepository
 ) : ViewModel() {
 
-    private val statusMessage = MutableLiveData<Event<Resource<Subscriber>>>()
-    val message: LiveData<Event<Resource<Subscriber>>>
-        get() = statusMessage
+    private val _subscriberStatus = MutableLiveData<Event<Resource<Subscriber>>>()
+    val subscriberStatus: LiveData<Event<Resource<Subscriber>>> = _subscriberStatus
 
     fun add(subscriber: Subscriber): Job =
         viewModelScope.launch {
             if (subscriber.name.isEmpty()) {
-                statusMessage.value = Event(Resource.error("Name is required", null))
+                _subscriberStatus.value = Event(Resource.error("Name is required", null))
             } else if ((subscriber.email.isEmpty()) && (subscriber.phoneNumber.isEmpty())) {
-                statusMessage.value =
+                _subscriberStatus.value =
                     Event(Resource.error("Please add email or phone number", null))
             } else {
                 repository.insert(subscriber)
-                statusMessage.value = Event(Resource.success("Contact registered", subscriber))
+                _subscriberStatus.value = Event(Resource.success("Contact registered", subscriber))
             }
         }
 
     fun update(subscriber: Subscriber): Job =
         viewModelScope.launch {
-            when {
-                subscriber.name.isEmpty() -> {
-                    statusMessage.value = Event(Resource.error("Name is required", null))
-                }
-                subscriber.email.isEmpty() and subscriber.phoneNumber.isEmpty() -> {
-                    statusMessage.value =
-                        Event(Resource.error("Please add email or phone number", null))
-                }
-                else -> {
-                    repository.update(subscriber)
-                    statusMessage.value = Event(Resource.success("Contact updated", subscriber))
-                }
+            if (subscriber.name.isEmpty()) {
+                _subscriberStatus.value = Event(Resource.error("Name is required", null))
+            } else if ((subscriber.email.isEmpty()) && (subscriber.phoneNumber.isEmpty())) {
+                _subscriberStatus.value =
+                    Event(Resource.error("Please add email or phone number", null))
+            } else {
+                repository.update(subscriber)
+                _subscriberStatus.value = Event(Resource.success("Contact updated", subscriber))
             }
         }
 }
