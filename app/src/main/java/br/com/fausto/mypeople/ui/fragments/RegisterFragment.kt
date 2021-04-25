@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import br.com.fausto.mypeople.R
 import br.com.fausto.mypeople.database.Subscriber
@@ -29,10 +30,7 @@ class RegisterFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val bundle = this.arguments
-        if (bundle != null) {
-            subscriberToUpdate = bundle.getSerializable("SUBSCRIBER_UPDATE") as Subscriber?
-        }
+
         return inflater.inflate(R.layout.fragment_register, container, false)
     }
 
@@ -44,7 +42,10 @@ class RegisterFragment : Fragment() {
         val confirmButton = requireView().findViewById<Button>(R.id.save_update_button)
         val clearButton = requireView().findViewById<Button>(R.id.clear_button)
 
-        setupUpdateState()
+        setFragmentResultListener("subscriber") { _, bundle ->
+            subscriberToUpdate = bundle.getSerializable("SUBSCRIBER_UPDATE") as Subscriber
+            setupUpdateState(bundle.getSerializable("SUBSCRIBER_UPDATE") as Subscriber)
+        }
 
         confirmButton.setOnClickListener {
             saveContact(
@@ -63,12 +64,10 @@ class RegisterFragment : Fragment() {
         })
     }
 
-    private fun setupUpdateState() {
-        if (subscriberToUpdate != null) {
-            inputName.setText(subscriberToUpdate!!.name)
-            inputEmail.setText(subscriberToUpdate!!.email)
-            inputCel.setText(subscriberToUpdate!!.phoneNumber)
-        }
+    private fun setupUpdateState(subscriberToUpdate: Subscriber) {
+        inputName.setText(subscriberToUpdate!!.name)
+        inputEmail.setText(subscriberToUpdate!!.email)
+        inputCel.setText(subscriberToUpdate!!.phoneNumber)
     }
 
     private fun saveContact(subscriber: Subscriber) {
@@ -82,7 +81,6 @@ class RegisterFragment : Fragment() {
                 registerViewModel.add(subscriber)
             }
         }
-//        Toast.makeText(requireContext(), "Done!", Toast.LENGTH_SHORT).show()
         clearFields()
     }
 

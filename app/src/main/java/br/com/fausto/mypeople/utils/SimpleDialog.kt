@@ -1,4 +1,4 @@
-package br.com.fausto.mypeople.ui.utils
+package br.com.fausto.mypeople.utils
 
 import android.os.Bundle
 import android.view.LayoutInflater
