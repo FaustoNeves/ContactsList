@@ -43,7 +43,6 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         initRecyclerView()
         findField = requireView().findViewById(R.id.textInputSearchEdit)
         findField.addTextChangedListener {
@@ -55,11 +54,10 @@ class HomeFragment : Fragment() {
                     }
                     if (it.toString().isBlank()) {
                         subscriberAdapter.setList(list)
-                        subscriberAdapter.notifyDataSetChanged()
                     }
                     subscriberAdapter.setList(tempList)
-                    subscriberAdapter.notifyDataSetChanged()
                 }
+                subscriberAdapter.notifyDataSetChanged()
             })
         }
 
@@ -94,13 +92,8 @@ class HomeFragment : Fragment() {
         val emailLayout: LinearLayout = dialog.findViewById(R.id.email_layout)
 
         dialog.show()
-        closeLayout.setOnClickListener {
-            dialog.dismiss()
-        }
-
-        callLayout.setOnClickListener {
-            makePhoneCall(subscriber.phoneNumber)
-        }
+        closeLayout.setOnClickListener { dialog.dismiss() }
+        callLayout.setOnClickListener { makePhoneCall(subscriber.phoneNumber) }
 
         emailLayout.setOnClickListener {
             val clipboard =

@@ -12,7 +12,9 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeVM @Inject constructor(private val repository: ISubscriberRepository) : ViewModel() {
+class HomeVM @Inject constructor(
+    private val repository: ISubscriberRepository
+) : ViewModel() {
 
     private val statusMessage = MutableLiveData<String>()
     val message: LiveData<String>

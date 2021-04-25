@@ -6,14 +6,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.fausto.mypeople.database.Subscriber
 import br.com.fausto.mypeople.repository.ISubscriberRepository
-import br.com.fausto.mypeople.repository.SubscriberRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class RegisterVM @Inject constructor(private val repository: ISubscriberRepository) : ViewModel() {
+class RegisterVM @Inject constructor(
+    private val repository: ISubscriberRepository
+) : ViewModel() {
 
     private val statusMessage = MutableLiveData<String>()
     val message: LiveData<String>

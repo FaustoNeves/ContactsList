@@ -5,8 +5,9 @@ import br.com.fausto.mypeople.database.Subscriber
 import br.com.fausto.mypeople.database.SubscriberDAO
 import javax.inject.Inject
 
-class SubscriberRepository @Inject constructor(private val dao: SubscriberDAO) :
-    ISubscriberRepository {
+class SubscriberRepository @Inject constructor(
+    private val dao: SubscriberDAO
+) : ISubscriberRepository {
 
     override suspend fun searchById(int: Int) = dao.searchById(int)
 
