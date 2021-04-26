@@ -8,10 +8,11 @@ Then, I decided to make some changes. First, the app would have two screens: one
 
 After many changes in my app, I tried to learn new concepts: dependency injection, a more refined architecture components and native functionalities of android.
 For all this, I mixed a bit all these 5 links:
-1. [Android Studio (Kotlin) Simple Dagger Hilt Room Database MVVM](https://www.youtube.com/watch?v=EMqlwjdNKcw&t=2007s)
-2. [Testing on android playlist](https://www.youtube.com/playlist?list=PLQkwcJG4YTCSYJ13G4kVIJ10X5zisB2Lq),
-3. [News APP](https://www.youtube.com/watch?v=kWAuZDIRdi8&t=549s)
-4. [Android's official dagger page](https://developer.android.com/training/dependency-injection/dagger-android?hl=en-us)
-5. [Android Developers architecture-samples](https://github.com/android/architecture-samples)
+1. [Dependency injection in Android (You must read this before going to DI)](https://developer.android.com/training/dependency-injection?hl=en-us)
+2. [Android Studio (Kotlin) Simple Dagger Hilt Room Database MVVM](https://www.youtube.com/watch?v=EMqlwjdNKcw&t=2007s)
+3. [Testing on android playlist](https://www.youtube.com/playlist?list=PLQkwcJG4YTCSYJ13G4kVIJ10X5zisB2Lq),
+4. [News APP](https://www.youtube.com/watch?v=kWAuZDIRdi8&t=549s)
+5. [Android's official dagger page](https://developer.android.com/training/dependency-injection/dagger-android?hl=en-us)
+6. [Android Developers architecture-samples](https://github.com/android/architecture-samples)
 
 Now the app has dagger-hilt dependency injection, unit and instrumented tests for repository, view models and database operations and a very basic github actions workflow and currently improving :)
