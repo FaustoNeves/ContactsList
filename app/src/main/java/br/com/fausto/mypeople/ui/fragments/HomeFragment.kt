@@ -62,7 +62,7 @@ class HomeFragment : Fragment() {
             })
         }
 
-        homeViewModel.message.observe(viewLifecycleOwner, { it ->
+        homeViewModel.subscriberStatus.observe(viewLifecycleOwner, { it ->
             it.getContentIfNotHandled()?.let {
                 Toast.makeText(context, it.toString(), Toast.LENGTH_SHORT).show()
             }

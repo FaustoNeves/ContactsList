@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import br.com.fausto.mypeople.database.Subscriber
 import br.com.fausto.mypeople.repository.ISubscriberRepository
 import br.com.fausto.mypeople.utils.Event
+import br.com.fausto.mypeople.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -18,13 +19,12 @@ class HomeVM @Inject constructor(
 ) : ViewModel() {
 
     val subscribers = repository.getAllSubscribers()
-    private val statusMessage = MutableLiveData<Event<String>>()
-    val message: LiveData<Event<String>>
-        get() = statusMessage
+    private val _subscriberStatus = MutableLiveData<Event<Resource<Subscriber>>>()
+    val subscriberStatus: LiveData<Event<Resource<Subscriber>>> = _subscriberStatus
 
     fun delete(subscriber: Subscriber): Job =
         viewModelScope.launch {
             repository.delete(subscriber)
-            statusMessage.value = Event("Successfully deleted")
+            _subscriberStatus.value = Event(Resource.success("Successfully deleted", subscriber))
         }
 }
