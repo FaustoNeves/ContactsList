@@ -1,66 +1,16 @@
-# MyPeople
+# Contacts List
 
-Many thanks to [Kotlin MVVM tutorial](https://www.youtube.com/watch?v=v2yocpEcE_g).
-This app illustrates how to create a register app (saving data on local database, no remote work needed) using MVVM pattern (live data and binding data).
-Now, what are the benefits of binding data with live data? In general, its less logic in the activity class, but there is a ton of boilerplate code in the activity.
-We need to instanciante view model class itself and view model factory. Why do we need to instanciante view model factory? Well, view model classes don't take any arguments, and
-its common practice to initialize our view model classes with some source of data classes (repositories, in most cases!). For this, we need to create our own view model initializer
-wich is just a boiler plate code. You can get all this from here [Google's official site for MVVMM](https://developer.android.com/jetpack/guide?hl=en-us).
-About binding data, its the same thing. Less code in the activity, but much more code in the XML file. Thats right, we'll write code in our XML file. 
-To bind data, we can do like this:
-
-Replace the usual method:
-
-```kotlin
-setContentView(R.layout.activity_main)
-``` 
-
-to 
-
-```kotlin
-binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-```
-
-The variable binding is initialized like this ```private lateinit var binding: ActivityMainBinding```
-Now, notice the name ActivityMainBinding? Its auto generated, we don't define it (as far as I know).
-
-In XML, we need to wrap ALL our code with a ```<layout></layout>``` tag. After this, we create a ```<data><variable/></data>``` tag. 
-It must be something like this:
-
-```xml
-<data>
-
-        <variable
-            name="viewModel"
-            type="br.com.fausto.mypeople.ui.viewmodel.SubscriberVM" />
-</data>
-```
-
-You see the name "viewModel"? Our variable binding in the main activity will connect these variables in the XML file with our view model class attributes through this
-name field, like this:
-```kotlin 
-binding.viewModel = subscriberViewModel
-```
-
-And, these fields (that we are binding from XML to view model class) will be like this:
-```xml
-<com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/textInputNameB"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:hint="@string/name"
-                android:text="@={viewModel.inputName}"
-                />
-```
-See the attribute ```android:text="@={viewModel.inputName}```? It will be directly connected with a live data attribute in our view model class.
-Got it? We are done with the XML part, now lets go to our view model class.
-
-Take a look in this attribute:
-```kotlin
-@Bindable
-val inputName = MutableLiveData<String>()
-```
-Its connected with our XML file field. Its simple as that. It will retrieve the inputs from the view. Its very simple, and the rest is just observed in the main activity.
+Greetings! This app allows you to register your contacts to later call or send emails to them.
 
 
-I hope you understand it! Thank you very much, bye!
+I started this app by simply copying from [Kotlin MVVM tutorial](https://www.youtube.com/watch?v=v2yocpEcE_g) to learn a little bit more about mvvm, live data and data binding.
+Then, I decided to make some changes. First, the app would have two screens: one for listing all the contacts and the second for registering and updating. The main obstacle was that I didn't know to work with a single view model class with 2 or more activities/fragments. I didn't know that my live data was refreshed since my view model class was being re instantiated. And before I could know more about [Communicating with fragments](https://developer.android.com/guide/fragments/communicate), I removed all ``@Binds`` and XML binding data stuff and completely change the purpose of the first tutorial.
+
+After many changes in my app, I tried to learn new concepts: dependency injection, a more refined architecture components and native functionalities of android.
+For all this, I mixed a bit all these 4 link:
+1. [Android Studio (Kotlin) Simple Dagger Hilt Room Database MVVM](https://www.youtube.com/watch?v=EMqlwjdNKcw&t=2007s)
+2. [Testing on android playlist](https://www.youtube.com/playlist?list=PLQkwcJG4YTCSYJ13G4kVIJ10X5zisB2Lq),
+3. [News APP](https://www.youtube.com/watch?v=kWAuZDIRdi8&t=549s)
+4. [Android's official dagger page](https://developer.android.com/training/dependency-injection/dagger-android?hl=en-us)
+
+Now the app has dagger-hilt dependency injection, unit and instrumented tests for repository, view models and database operations and a very basic github actions workflow and currently improving :)
