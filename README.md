@@ -12,6 +12,6 @@ For all this, I mixed a bit all these 5 links:
 2. [Testing on android playlist](https://www.youtube.com/playlist?list=PLQkwcJG4YTCSYJ13G4kVIJ10X5zisB2Lq),
 3. [News APP](https://www.youtube.com/watch?v=kWAuZDIRdi8&t=549s)
 4. [Android's official dagger page](https://developer.android.com/training/dependency-injection/dagger-android?hl=en-us)
-5. [Android Developers github profile](https://github.com/android/architecture-samples)
+5. [Android Developers architecture-samples](https://github.com/android/architecture-samples)
 
 Now the app has dagger-hilt dependency injection, unit and instrumented tests for repository, view models and database operations and a very basic github actions workflow and currently improving :)
