@@ -1,16 +1,21 @@
 package br.com.fausto.mypeople.ui.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import br.com.fausto.mypeople.R
 import br.com.fausto.mypeople.database.Subscriber
 import br.com.fausto.mypeople.ui.viewmodel.RegisterVM
+import br.com.fausto.mypeople.utils.Status
 import com.google.android.material.textfield.TextInputEditText
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.GlobalScope
@@ -24,15 +29,13 @@ class RegisterFragment : Fragment() {
     private lateinit var inputEmail: TextInputEditText
     private lateinit var inputCel: TextInputEditText
     var subscriberToUpdate: Subscriber? = null
+    var isUpdate: Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val bundle = this.arguments
-        if (bundle != null) {
-            subscriberToUpdate = bundle.getSerializable("SUBSCRIBER_UPDATE") as Subscriber?
-        }
+
         return inflater.inflate(R.layout.fragment_register, container, false)
     }
 
@@ -44,7 +47,11 @@ class RegisterFragment : Fragment() {
         val confirmButton = requireView().findViewById<Button>(R.id.save_update_button)
         val clearButton = requireView().findViewById<Button>(R.id.clear_button)
 
-        setupUpdateState()
+        setFragmentResultListener("subscriber") { _, bundle ->
+            subscriberToUpdate = bundle.getSerializable("SUBSCRIBER_UPDATE") as Subscriber
+            setupUpdateState(bundle.getSerializable("SUBSCRIBER_UPDATE") as Subscriber)
+            isUpdate = true
+        }
 
         confirmButton.setOnClickListener {
             saveContact(
@@ -58,22 +65,28 @@ class RegisterFragment : Fragment() {
         }
 
         clearButton.setOnClickListener { clearFields() }
-        registerViewModel.message.observe(viewLifecycleOwner, { it ->
-            Toast.makeText(context, it.toString(), Toast.LENGTH_SHORT).show()
+
+        registerViewModel.subscriberStatus.observe(viewLifecycleOwner, { it ->
+            it.getContentIfNotHandled()?.let {
+                Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
+                if ((it.status) == Status.SUCCESS) {
+                    clearFields()
+                    requireView().findViewById<LinearLayout>(R.id.mainLinearLayout).requestFocus()
+                    requireView().hideKeyboard()
+                }
+            }
         })
     }
 
-    private fun setupUpdateState() {
-        if (subscriberToUpdate != null) {
-            inputName.setText(subscriberToUpdate!!.name)
-            inputEmail.setText(subscriberToUpdate!!.email)
-            inputCel.setText(subscriberToUpdate!!.phoneNumber)
-        }
+    private fun setupUpdateState(subscriberToUpdate: Subscriber) {
+        inputName.setText(subscriberToUpdate.name)
+        inputEmail.setText(subscriberToUpdate.email)
+        inputCel.setText(subscriberToUpdate.phoneNumber)
     }
 
     private fun saveContact(subscriber: Subscriber) {
         GlobalScope.launch {
-            if (subscriberToUpdate != null) {
+            if (isUpdate) {
                 subscriberToUpdate!!.name = inputName.text.toString()
                 subscriberToUpdate!!.email = inputEmail.text.toString()
                 subscriberToUpdate!!.phoneNumber = inputCel.text.toString()
@@ -82,8 +95,6 @@ class RegisterFragment : Fragment() {
                 registerViewModel.add(subscriber)
             }
         }
-//        Toast.makeText(requireContext(), "Done!", Toast.LENGTH_SHORT).show()
-        clearFields()
     }
 
     private fun clearFields() {
@@ -92,8 +103,8 @@ class RegisterFragment : Fragment() {
         inputCel.setText("")
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        subscriberToUpdate = null
+    fun View.hideKeyboard() {
+        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(windowToken, 0)
     }
 }

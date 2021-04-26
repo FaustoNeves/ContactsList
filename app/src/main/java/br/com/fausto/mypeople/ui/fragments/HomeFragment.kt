@@ -12,9 +12,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import br.com.fausto.mypeople.R
@@ -28,7 +31,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class HomeFragment : Fragment() {
 
     private val homeViewModel: HomeVM by viewModels()
-    private lateinit var subscriperAdapter: SubscriberAdapter
+    private lateinit var subscriberAdapter: SubscriberAdapter
     private lateinit var findField: TextInputEditText
 
     override fun onCreateView(
@@ -40,8 +43,8 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         initRecyclerView()
+
         findField = requireView().findViewById(R.id.textInputSearchEdit)
         findField.addTextChangedListener {
             homeViewModel.subscribers.observe(viewLifecycleOwner, { list ->
@@ -51,32 +54,33 @@ class HomeFragment : Fragment() {
                         tempList.add(subscriber)
                     }
                     if (it.toString().isBlank()) {
-                        subscriperAdapter.setList(list)
-                        subscriperAdapter.notifyDataSetChanged()
+                        subscriberAdapter.setList(list)
                     }
-                    subscriperAdapter.setList(tempList)
-                    subscriperAdapter.notifyDataSetChanged()
+                    subscriberAdapter.setList(tempList)
                 }
+                subscriberAdapter.notifyDataSetChanged()
             })
         }
 
-        homeViewModel.message.observe(viewLifecycleOwner, {
-            Toast.makeText(context, it.toString(), Toast.LENGTH_SHORT).show()
+        homeViewModel.subscriberStatus.observe(viewLifecycleOwner, { it ->
+            it.getContentIfNotHandled()?.let {
+                Toast.makeText(context, it.toString(), Toast.LENGTH_SHORT).show()
+            }
         })
     }
 
     private fun initRecyclerView() {
         val recyclerView = view?.findViewById<RecyclerView>(R.id.subscriber_recycler_view)
         recyclerView!!.layoutManager = LinearLayoutManager(context)
-        subscriperAdapter = SubscriberAdapter(requireContext()) { listItemClicked(it) }
-        recyclerView.adapter = subscriperAdapter
+        subscriberAdapter = SubscriberAdapter(requireContext()) { listItemClicked(it) }
+        recyclerView.adapter = subscriberAdapter
         displaySubscribersList()
     }
 
     private fun displaySubscribersList() {
         homeViewModel.subscribers.observe(viewLifecycleOwner, {
-            subscriperAdapter.setList(it)
-            subscriperAdapter.notifyDataSetChanged()
+            subscriberAdapter.setList(it)
+            subscriberAdapter.notifyDataSetChanged()
         })
     }
 
@@ -91,13 +95,8 @@ class HomeFragment : Fragment() {
         val emailLayout: LinearLayout = dialog.findViewById(R.id.email_layout)
 
         dialog.show()
-        closeLayout.setOnClickListener {
-            dialog.dismiss()
-        }
-
-        callLayout.setOnClickListener {
-            context?.makePhoneCall(subscriber.phoneNumber)
-        }
+        closeLayout.setOnClickListener { dialog.dismiss() }
+        callLayout.setOnClickListener { makePhoneCall(subscriber.phoneNumber) }
 
         emailLayout.setOnClickListener {
             val clipboard =
@@ -114,21 +113,17 @@ class HomeFragment : Fragment() {
 
         excludeLayout.setOnClickListener {
             homeViewModel.delete(subscriber)
-            subscriperAdapter.notifyDataSetChanged()
+            subscriberAdapter.notifyDataSetChanged()
             dialog.dismiss()
         }
         editLayout.setOnClickListener {
-            val registerFragment = RegisterFragment()
-            val bundle = Bundle()
-            bundle.putSerializable("SUBSCRIBER_UPDATE", subscriber)
-            registerFragment.arguments = bundle
-            parentFragmentManager.beginTransaction().replace(R.id.fragmentHost, registerFragment)
-                .commit()
+            setFragmentResult("subscriber", bundleOf("SUBSCRIBER_UPDATE" to subscriber))
+            requireActivity().findNavController(R.id.fragmentHost).navigate(R.id.registerFragment)
             dialog.dismiss()
         }
     }
 
-    private fun Context.makePhoneCall(number: String): Boolean = try {
+    private fun makePhoneCall(number: String): Boolean = try {
         val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$number"))
         startActivity(intent)
         true

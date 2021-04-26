@@ -7,10 +7,8 @@ import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
-import org.hamcrest.CoreMatchers.equalTo
 import org.junit.After
 import org.junit.Assert.assertFalse
-import org.junit.Assert.assertThat
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -52,7 +50,7 @@ class ContactsListDatabaseTest {
         val subscriber = Subscriber(5, "Ann", "ann@hotmail.com", "123")
         subscriberDAO.insertSubscriber(subscriber)
         val newSubscriber = subscriberDAO.searchById(subscriber.id)
-        assertThat(subscriber.name, equalTo(newSubscriber.name))
+        assertThat(subscriber.name).isEqualTo(newSubscriber.name)
     }
 
     @Test
@@ -62,7 +60,7 @@ class ContactsListDatabaseTest {
         subscriber.phoneNumber = "789"
         subscriberDAO.updateSubscriber(subscriber)
         val newSubscriber = subscriberDAO.searchById(subscriber.id)
-        assertThat(subscriber.phoneNumber, equalTo(newSubscriber.phoneNumber))
+        assertThat(subscriber.phoneNumber).isEqualTo(newSubscriber.phoneNumber)
     }
 
     @Test
