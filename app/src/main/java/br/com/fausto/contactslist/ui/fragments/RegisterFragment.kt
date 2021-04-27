@@ -30,7 +30,7 @@ class RegisterFragment : Fragment() {
     private lateinit var inputName: TextInputEditText
     private lateinit var inputEmail: TextInputEditText
     private lateinit var inputCel: TextInputEditText
-    private lateinit var confirmButton: Button
+    lateinit var confirmButton: Button
     var contactToUpdate: Contact? = null
     var isUpdate: Boolean = false
 

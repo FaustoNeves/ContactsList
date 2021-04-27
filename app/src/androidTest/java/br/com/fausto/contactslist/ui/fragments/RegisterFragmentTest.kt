@@ -1,6 +1,5 @@
 package br.com.fausto.contactslist.ui.fragments
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.typeText
@@ -25,9 +24,6 @@ import javax.inject.Named
 @ExperimentalCoroutinesApi
 class RegisterFragmentTest {
 
-//    @get:Rule
-//    var instantTaskExecutorRule = InstantTaskExecutorRule()
-
     @get:Rule
     var hiltRule = HiltAndroidRule(this)
 
@@ -37,7 +33,10 @@ class RegisterFragmentTest {
     private lateinit var contactDAO: ContactDAO
 
     @Before
-    fun setup() = hiltRule.inject()
+    fun setup() {
+        hiltRule.inject()
+        contactDAO = contactsListDatabase.ContactDAO()
+    }
 
     @After
     fun closeDB() {
@@ -58,8 +57,8 @@ class RegisterFragmentTest {
     @Test
     fun registerContactWithNameEmail() {
         launchFragmentInHiltContainer<RegisterFragment> {}
-        onView(withId(R.id.textInputName)).perform(typeText("Donatelo"))
-        onView(withId(R.id.textInputEmail)).perform(typeText("donatelo@hotmail.com"))
+        onView(withId(R.id.textInputName)).perform(typeText("Rafael"))
+        onView(withId(R.id.textInputEmail)).perform(typeText("rafael@hotmail.com"))
         onView(withId(R.id.textInputCel)).perform(typeText(""))
         onView(withId(R.id.save_update_button)).perform(click())
         onView(withText("Contact registered")).inRoot(ToastMatcher())
@@ -67,9 +66,9 @@ class RegisterFragmentTest {
     }
 
     @Test
-    fun registerContactWithAllNamePhoneNumber() {
+    fun registerContactWithNamePhoneNumber() {
         launchFragmentInHiltContainer<RegisterFragment> {}
-        onView(withId(R.id.textInputName)).perform(typeText("Donatelo"))
+        onView(withId(R.id.textInputName)).perform(typeText("Michelangelo"))
         onView(withId(R.id.textInputEmail)).perform(typeText(""))
         onView(withId(R.id.textInputCel)).perform(typeText("123456"))
         onView(withId(R.id.save_update_button)).perform(click())
@@ -81,7 +80,7 @@ class RegisterFragmentTest {
     fun registerContactWithEmptyName() {
         launchFragmentInHiltContainer<RegisterFragment> {}
         onView(withId(R.id.textInputName)).perform(typeText(""))
-        onView(withId(R.id.textInputEmail)).perform(typeText("donatelo@hotmail.com"))
+        onView(withId(R.id.textInputEmail)).perform(typeText("splinter@hotmail.com"))
         onView(withId(R.id.textInputCel)).perform(typeText("123456"))
         onView(withId(R.id.save_update_button)).perform(click())
         onView(withText("Name is required")).inRoot(ToastMatcher())
@@ -91,7 +90,7 @@ class RegisterFragmentTest {
     @Test
     fun registerContactWithEmptyEmailPhoneNumber() {
         launchFragmentInHiltContainer<RegisterFragment> {}
-        onView(withId(R.id.textInputName)).perform(typeText("Donatelo"))
+        onView(withId(R.id.textInputName)).perform(typeText("Leonardo"))
         onView(withId(R.id.textInputEmail)).perform(typeText(""))
         onView(withId(R.id.textInputCel)).perform(typeText(""))
         onView(withId(R.id.save_update_button)).perform(click())
@@ -99,8 +98,23 @@ class RegisterFragmentTest {
             .check(matches(isDisplayed()))
     }
 
-//    @Test
-//    fun updateContactWithAllCredentials() {
-//
-//    }
+    /**Couldn't test upgrade functionalities
+    @Test
+    fun updateContactWithAllCredentials() {
+    val contact = Contact(15, "Shaokan", "shaokan@gmail.com", "55555")
+    runBlocking {
+    contactDAO.insertContact(contact)
+    }
+
+    launchFragmentInHiltContainer<RegisterFragment> {}
+
+    onView(withId(R.id.textInputName)).perform(typeText(contact.name))
+    onView(withId(R.id.textInputEmail)).perform(typeText(contact.email))
+    onView(withId(R.id.textInputCel)).perform(typeText(contact.phoneNumber))
+    onView(withId(R.id.save_update_button)).perform(click())
+    onView(withText("Contact updated")).inRoot(ToastMatcher())
+    .check(matches(isDisplayed()))
+    runBlocking { delay(2000) }
+    }
+     */
 }

@@ -22,10 +22,11 @@ class RegisterVM @Inject constructor(
     fun addOrUpdate(contact: Contact) {
         runBlocking {
             if (contact.name.isEmpty()) {
-                _contactStatus.value = Event(Resource.error("Name is required", null))
+                _contactStatus.postValue(Event(Resource.error("Name is required", null)))
             } else if ((contact.email.isEmpty()) && (contact.phoneNumber.isEmpty())) {
-                _contactStatus.value =
+                _contactStatus.postValue(
                     Event(Resource.error("Please add email or phone number", null))
+                )
             } else {
                 if (isUpdate(contact.id) == true) {
                     _contactStatus.postValue(Event(Resource.success("Contact updated", contact)))
