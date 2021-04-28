@@ -18,6 +18,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import br.com.fausto.contactslist.R
@@ -118,7 +120,7 @@ class HomeFragment : Fragment() {
         }
         editLayout.setOnClickListener {
             setFragmentResult("subscriber", bundleOf("SUBSCRIBER_UPDATE" to contact))
-            requireActivity().findNavController(R.id.fragmentHost).navigate(HomeFragmentDirections.actionHomeFragmentToRegisterFragment())
+            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToRegisterFragment())
             dialog.dismiss()
         }
     }
