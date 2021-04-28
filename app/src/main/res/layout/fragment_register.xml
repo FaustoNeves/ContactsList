@@ -7,12 +7,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/light_blue"
     android:orientation="vertical"
-    tools:context=".ui.fragments.RegisterFragment"
+    tools:context="br.com.fausto.contactslist.ui.fragments.RegisterFragment"
     android:id="@+id/mainLinearLayout"
     >
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputNameA"
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
         app:startIconDrawable="@drawable/ic_register"
         app:startIconTint="@color/black"
@@ -35,7 +34,6 @@
     </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputEmailA"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
             app:startIconDrawable="@drawable/ic_email"
             app:startIconTint="@color/black"
@@ -57,7 +55,6 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputCelA"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
             app:startIconDrawable="@drawable/ic_contact_phone"
             app:startIconTint="@color/black"
