@@ -13,6 +13,7 @@ import br.com.fausto.contactslist.ui.utils.ToastMatcher
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -28,7 +29,6 @@ class RegisterFragmentTest {
     var hiltRule = HiltAndroidRule(this)
 
     @Inject
-    @Named("test_contact_database")
     lateinit var contactsListDatabase: ContactsListDatabase
     private lateinit var contactDAO: ContactDAO
 
@@ -40,6 +40,7 @@ class RegisterFragmentTest {
 
     @After
     fun closeDB() {
+        runBlocking { contactDAO.deleteAllContacts() }
         contactsListDatabase.close()
     }
 
