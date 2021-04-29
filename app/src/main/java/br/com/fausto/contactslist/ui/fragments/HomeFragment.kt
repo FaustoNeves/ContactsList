@@ -5,7 +5,6 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,7 +16,7 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
-import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import br.com.fausto.contactslist.R
@@ -95,7 +94,6 @@ class HomeFragment : Fragment() {
         val emailLayout: LinearLayout = dialog.findViewById(R.id.email_layout)
 
         dialog.show()
-        closeLayout.setOnClickListener { dialog.dismiss() }
         callLayout.setOnClickListener { makePhoneCall(contact.phoneNumber) }
 
         emailLayout.setOnClickListener {
@@ -111,20 +109,21 @@ class HomeFragment : Fragment() {
             composeEmail()
         }
 
+        editLayout.setOnClickListener {
+            setFragmentResult("subscriber", bundleOf("SUBSCRIBER_UPDATE" to contact))
+            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToRegisterFragment())
+            dialog.dismiss()
+        }
         excludeLayout.setOnClickListener {
             homeViewModel.delete(contact)
             contactAdapter.notifyDataSetChanged()
             dialog.dismiss()
         }
-        editLayout.setOnClickListener {
-            setFragmentResult("subscriber", bundleOf("SUBSCRIBER_UPDATE" to contact))
-            requireActivity().findNavController(R.id.fragmentHost).navigate(HomeFragmentDirections.actionHomeFragmentToRegisterFragment())
-            dialog.dismiss()
-        }
+        closeLayout.setOnClickListener { dialog.dismiss() }
     }
 
     private fun makePhoneCall(number: String): Boolean = try {
-        val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$number"))
+        val intent = Intent(Intent.ACTION_DIAL)
         startActivity(intent)
         true
     } catch (e: Exception) {
