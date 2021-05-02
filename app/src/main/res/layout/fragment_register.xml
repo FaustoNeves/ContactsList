@@ -71,7 +71,9 @@
                 android:layout_height="match_parent"
                 android:background="@color/orange"
                 android:hint="@string/phone_number"
-                android:singleLine="true" />
+                android:singleLine="true"
+                android:inputType="phone"
+                />
 
         </com.google.android.material.textfield.TextInputLayout>
 

@@ -30,7 +30,7 @@ class ContactAdapter(
 
     fun setList(contacts: List<Contact>) {
         contactsList.clear()
-        contactsList.addAll(contacts)
+        contactsList.addAll(contacts.sortedBy { it.name })
     }
 
     override fun getItemCount(): Int {
