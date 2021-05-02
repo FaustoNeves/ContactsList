@@ -16,6 +16,7 @@
         android:textAlignment="center"
         android:textColor="@color/black"
         android:textSize="40sp"
+        android:layout_marginTop="15sp"
         android:textStyle="italic"
         app:layout_constraintBottom_toTopOf="@+id/textInputSearch"
         app:layout_constraintEnd_toEndOf="parent"
@@ -38,7 +39,7 @@
                 android:id="@+id/textInputSearchEdit"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="50sp"
+                android:layout_marginTop="40sp"
                 android:background="@color/orange"
                 android:hint="@string/search"
                 android:singleLine="true" />
@@ -47,18 +48,45 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingBottom="36sp"
-    >
+    android:paddingBottom="36sp">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/contact_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="15sp"
+        android:layout_marginStart="15sp"
+        android:layout_marginTop="15sp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginBottom="15sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <com.reddit.indicatorfastscroll.FastScrollerView
+        android:id="@+id/fast_scroller_thumb"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:minWidth="25sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.909"
+        app:layout_constraintStart_toEndOf="@+id/contact_recycler_view"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.422" />
+
+    <com.reddit.indicatorfastscroll.FastScrollerThumbView
+        android:id="@+id/sample_styled_fastscroller_thumb"
+        style="@style/Widget.IndicatorFastScroll.FastScrollerThumb"
+        app:fastScrollerThumbColor="@color/black"
+        android:textColor="@color/orange"
+        android:layout_width="40dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/fast_scroller_thumb"
+        app:layout_constraintEnd_toStartOf="@+id/fast_scroller_thumb"
+        app:layout_constraintTop_toTopOf="@+id/fast_scroller_thumb" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>
