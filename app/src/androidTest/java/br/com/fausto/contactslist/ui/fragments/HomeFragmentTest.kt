@@ -100,8 +100,9 @@ class HomeFragmentTest {
         onView(withId(R.id.contact_recycler_view)).perform(
             RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click())
         )
-        onView(withId(R.id.edit_layout)).inRoot(isDialog()).check(matches(isDisplayed()))
-        onView(withId(R.id.edit_layout)).check(matches(isClickable())).perform(click())
+        onView(withId(R.id.edit_layout)).inRoot(isDialog()).check(matches(isDisplayed())).perform(
+            click()
+        )
         verify(navController).navigate(HomeFragmentDirections.actionHomeFragmentToRegisterFragment())
     }
 
