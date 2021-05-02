@@ -1,5 +1,5 @@
 name: Android Build
-on: push_request
+on: push
 jobs:
   build:
     runs-on: macos-latest
