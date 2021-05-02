@@ -25,7 +25,6 @@ import br.com.fausto.contactslist.ui.utils.ToastMatcher
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.CoreMatchers.allOf
 import org.junit.After
@@ -108,12 +107,12 @@ class HomeFragmentTest {
 
     @Test
     fun deleteLayoutTest() {
+        launchFragmentInHiltContainer<RegisterFragment> {}
         launchFragmentInHiltContainer<HomeFragment> {}
         onView(withId(R.id.contact_recycler_view)).perform(
             RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click())
         )
         onView(withId(R.id.exclude_layout)).perform(click())
-        runBlocking { delay((2000)) }
         onView(withText("Successfully deleted")).inRoot(ToastMatcher())
             .check(matches(isDisplayed()))
     }
