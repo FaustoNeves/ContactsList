@@ -41,12 +41,12 @@ class ContactAdapter(
 class MyViewHolder(private val itemInList: View) : RecyclerView.ViewHolder(itemInList) {
     fun bind(contact: Contact, clickListener: (Contact) -> Unit) {
         val nameView: TextView = itemInList.findViewById(R.id.name_text_view)
-        val emailView: TextView = itemInList.findViewById(R.id.email_text_view)
-        val numberView: TextView = itemInList.findViewById(R.id.number_text_view)
+//        val emailView: TextView = itemInList.findViewById(R.id.email_text_view)
+//        val numberView: TextView = itemInList.findViewById(R.id.number_text_view)
         val itemLayout: RelativeLayout = itemInList.findViewById(R.id.list_item_layout)
         nameView.text = contact.name
-        emailView.text = contact.email
-        numberView.text = contact.phoneNumber
+//        emailView.text = contact.email
+//        numberView.text = contact.phoneNumber
         itemLayout.setOnClickListener {
             clickListener(contact)
         }
