@@ -100,13 +100,3 @@
                 />
         </LinearLayout>
 </LinearLayout>
-
-<!--<com.google.android.material.textfield.TextInputEditText-->
-<!--android:id="@+id/textInputSearchEdit"-->
-<!--android:layout_width="match_parent"-->
-<!--android:layout_height="match_parent"-->
-<!--android:background="@color/orange"-->
-<!--android:hint="@string/search"-->
-<!--android:singleLine="true"-->
-<!--tools:layout_editor_absoluteX="29dp"-->
-<!--tools:layout_editor_absoluteY="136dp" />-->
