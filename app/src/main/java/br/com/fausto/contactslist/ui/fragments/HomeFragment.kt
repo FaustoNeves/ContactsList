@@ -24,14 +24,21 @@ import br.com.fausto.contactslist.database.Contact
 import br.com.fausto.contactslist.ui.adapters.ContactAdapter
 import br.com.fausto.contactslist.ui.viewmodel.HomeVM
 import com.google.android.material.textfield.TextInputEditText
+import com.reddit.indicatorfastscroll.FastScrollItemIndicator
+import com.reddit.indicatorfastscroll.FastScrollerThumbView
+import com.reddit.indicatorfastscroll.FastScrollerView
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
 
     private val homeViewModel: HomeVM by viewModels()
+    private lateinit var recyclerView: RecyclerView
     private lateinit var contactAdapter: ContactAdapter
     private lateinit var findField: TextInputEditText
+    private lateinit var fastScrollerView: FastScrollerView
+    private lateinit var fastScrollerThumbView: FastScrollerThumbView
+    private lateinit var teste_lista: List<Contact>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,9 +49,14 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        recyclerView = requireView().findViewById(R.id.contact_recycler_view)
+        findField = requireView().findViewById(R.id.textInputSearchEdit)
+        fastScrollerView = requireView().findViewById(R.id.fast_scroller_thumb)
+        fastScrollerThumbView = requireView().findViewById(R.id.sample_styled_fastscroller_thumb)
+        fastScrollerThumbView.setupWithFastScroller(fastScrollerView)
         initRecyclerView()
 
-        findField = requireView().findViewById(R.id.textInputSearchEdit)
         findField.addTextChangedListener {
             homeViewModel.contacts.observe(viewLifecycleOwner, { list ->
                 val tempList = mutableListOf<Contact>()
@@ -66,14 +78,29 @@ class HomeFragment : Fragment() {
                 Toast.makeText(context, it.message.toString(), Toast.LENGTH_SHORT).show()
             }
         })
+
+        homeViewModel.contacts.observe(viewLifecycleOwner, {
+            teste_lista = it
+        })
+        fastScrollerView.setupWithRecyclerView(
+            recyclerView,
+            { position ->
+                val item = teste_lista.sortedBy { it.name }[position]
+                FastScrollItemIndicator.Text(
+                    item.name.substring(0, 1).toUpperCase()
+                )
+            }
+        )
     }
 
     private fun initRecyclerView() {
-        val recyclerView = view?.findViewById<RecyclerView>(R.id.contact_recycler_view)
-        recyclerView!!.layoutManager = LinearLayoutManager(context)
+        recyclerView.layoutManager = LinearLayoutManager(context)
         contactAdapter = ContactAdapter(requireContext()) { listItemClicked(it) }
         recyclerView.adapter = contactAdapter
         displayContactsList()
+
+        homeViewModel.contacts.observe(viewLifecycleOwner, {
+        })
     }
 
     private fun displayContactsList() {

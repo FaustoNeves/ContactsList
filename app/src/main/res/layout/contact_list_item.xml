@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="20dp"
+    android:layout_marginBottom="10sp"
     android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
@@ -50,6 +50,7 @@
                     android:layout_below="@id/email_text_view"
                     android:layout_toEndOf="@id/name_text_view"
                     android:textColor="@color/black"
+                    android:inputType="phone"
                     tools:text="(11) 123456789" />
             </RelativeLayout>
 

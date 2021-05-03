@@ -128,4 +128,7 @@ dependencies {
     androidTestImplementation 'org.mockito:mockito-android:2.28.2'
     androidTestImplementation "org.mockito:mockito-core:2.28.2"
 //    androidTestImplementation "com.linkedin.dexmaker:dexmaker-mockito:2.12.1"
+
+    //Reddit's library for fast scrolling on recyclerview
+    implementation 'com.reddit:indicator-fast-scroll:1.4.0'
 }

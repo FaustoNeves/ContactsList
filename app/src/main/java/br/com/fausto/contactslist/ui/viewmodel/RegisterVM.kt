@@ -21,13 +21,7 @@ class RegisterVM @Inject constructor(
 
     fun addOrUpdate(contact: Contact) {
         runBlocking {
-            if (contact.name.isEmpty()) {
-                _contactStatus.postValue(Event(Resource.error("Name is required", null)))
-            } else if ((contact.email.isEmpty()) && (contact.phoneNumber.isEmpty())) {
-                _contactStatus.postValue(
-                    Event(Resource.error("Please add email or phone number", null))
-                )
-            } else {
+            if ((checkFieldsNullability(contact)) && (checkFieldsSize(contact))) {
                 if (isUpdate(contact.id) == true) {
                     _contactStatus.postValue(Event(Resource.success("Contact updated", contact)))
                     repository.update(contact)
@@ -51,6 +45,53 @@ class RegisterVM @Inject constructor(
         } catch (e: Exception) {
         } finally {
             return isUpdate
+        }
+    }
+
+    private fun checkFieldsNullability(contact: Contact): Boolean {
+        if (contact.name.isEmpty()) {
+            _contactStatus.postValue(Event(Resource.error("Name is required", null)))
+            return false
+        } else if ((contact.email.isEmpty()) && (contact.phoneNumber.isEmpty())) {
+            _contactStatus.postValue(
+                Event(Resource.error("Please add email or phone number", null))
+            )
+            return false
+        }
+        return true
+    }
+
+    private fun checkFieldsSize(contact: Contact): Boolean {
+        when {
+            contact.name.length > 40 -> {
+                _contactStatus.postValue(
+                    Event(
+                        Resource.error(
+                            "Name limited to 40 characters",
+                            null
+                        )
+                    )
+                )
+                return false
+            }
+            contact.email.length > 40 -> {
+                _contactStatus.postValue(
+                    Event(Resource.error("Email address limited to 40 characters", null))
+                )
+                return false
+            }
+            contact.phoneNumber.length > 20 -> {
+                _contactStatus.postValue(
+                    Event(
+                        Resource.error(
+                            "Number limited to 20 characters",
+                            null
+                        )
+                    )
+                )
+                return false
+            }
+            else -> return true
         }
     }
 }
