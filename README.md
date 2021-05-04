@@ -5,7 +5,7 @@ Greetings! This app allows you to register your contacts to later call or send e
 
 | Home Screen      | Register Screen      |
 |------------|-------------|
-|   <img src="https://user-images.githubusercontent.com/66192808/116832889-d6a76d80-ab8c-11eb-80e5-1a48cd3e9c4c.gif" alt="drawing" width="350"/>|<img src="https://user-images.githubusercontent.com/66192808/116832886-d5764080-ab8c-11eb-943c-6467ab9b02fe.gif" alt="drawing" width="350">|
+|   <img src="https://user-images.githubusercontent.com/66192808/116832889-d6a76d80-ab8c-11eb-80e5-1a48cd3e9c4c.gif" alt="drawing" width="350"/>|<img src="https://user-images.githubusercontent.com/66192808/117049933-2ac86400-aceb-11eb-9054-13fe7cf991af.gif" alt="drawing" width="350">|
 
 I started this app by simply copying from [Kotlin MVVM tutorial](https://www.youtube.com/watch?v=v2yocpEcE_g) to learn a little bit more about mvvm, live data and data binding.
 Then, I decided to make some changes. First, the app would have two screens: one for listing all the contacts and the second for registering and updating. The main obstacle was that I didn't know to work with a single view model class with 2 or more activities/fragments. I didn't know that my live data was refreshed since my view model class was being re instantiated. And before I could know more about [Communicating with fragments](https://developer.android.com/guide/fragments/communicate), I removed all ``@Binds`` and XML binding data stuff and completely change the purpose of the first tutorial.
