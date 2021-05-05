@@ -5,6 +5,7 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -38,7 +39,7 @@ class HomeFragment : Fragment() {
     private lateinit var findField: TextInputEditText
     private lateinit var fastScrollerView: FastScrollerView
     private lateinit var fastScrollerThumbView: FastScrollerThumbView
-    private lateinit var teste_lista: List<Contact>
+    private lateinit var contactsList: List<Contact>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -80,12 +81,12 @@ class HomeFragment : Fragment() {
         })
 
         homeViewModel.contacts.observe(viewLifecycleOwner, {
-            teste_lista = it
+            contactsList = it
         })
         fastScrollerView.setupWithRecyclerView(
             recyclerView,
             { position ->
-                val item = teste_lista.sortedBy { it.name }[position]
+                val item = contactsList.sortedBy { it.name }[position]
                 FastScrollItemIndicator.Text(
                     item.name.substring(0, 1).toUpperCase()
                 )
@@ -150,7 +151,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun makePhoneCall(number: String): Boolean = try {
-        val intent = Intent(Intent.ACTION_DIAL)
+        val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$number"))
         startActivity(intent)
         true
     } catch (e: Exception) {
